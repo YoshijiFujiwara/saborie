@@ -4,7 +4,7 @@
   "description": "frontend",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "next -p 3210",
     "build": "next build",
     "start": "next start",
     "tslint": "tslint -p . -c tslint.json"
