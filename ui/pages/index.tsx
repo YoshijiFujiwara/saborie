@@ -1,30 +1,10 @@
-import { gql, useQuery } from "@apollo/client";
 import { NextPage } from "next";
 import React from "react";
+import { usePostsQuery } from "../generated/graphql";
 import { withApollo } from "../lib/apollo";
 
-const postsQuery = gql`
-  query {
-    posts {
-      title
-    }
-  }
-`;
-
-interface PostsQuery {
-  posts: {
-    title: string;
-  }[];
-}
-
-interface InitialProps {
-  greeting: string;
-}
-
-type Props = InitialProps;
-
-const IndexPage: NextPage<Props, InitialProps> = props => {
-  const { loading, error, data } = useQuery<PostsQuery>(postsQuery);
+const IndexPage: NextPage = () => {
+  const { loading, error, data } = usePostsQuery();
   const posts = data?.posts;
 
   if (loading) {
@@ -43,10 +23,6 @@ const IndexPage: NextPage<Props, InitialProps> = props => {
     <p>There are no posts here.</p>
   );
 };
-
-IndexPage.getInitialProps = async () => ({
-  greeting: "Hello world"
-});
 
 const IndexPageWithApollo = withApollo(IndexPage);
 
