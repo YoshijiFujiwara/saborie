@@ -78,12 +78,77 @@ export type User = {
   updatedAt: Scalars["String"];
 };
 
+export type LoginMutationVariables = {
+  input: LoginInput;
+};
+
+export type LoginMutation = { __typename?: "Mutation" } & {
+  login: { __typename?: "AuthPayload" } & Pick<AuthPayload, "id" | "email">;
+};
+
 export type PostsQueryVariables = {};
 
 export type PostsQuery = { __typename?: "Query" } & {
   posts: Array<{ __typename?: "Post" } & Pick<Post, "id" | "title" | "body">>;
 };
 
+export type SignUpMutationVariables = {
+  input: SignUpInput;
+};
+
+export type SignUpMutation = { __typename?: "Mutation" } & {
+  signUp: { __typename?: "AuthPayload" } & Pick<AuthPayload, "id" | "email">;
+};
+
+export const LoginDocument = gql`
+  mutation Login($input: LoginInput!) {
+    login(loginInput: $input) {
+      id
+      email
+    }
+  }
+`;
+export type LoginMutationFn = ApolloReactCommon.MutationFunction<
+  LoginMutation,
+  LoginMutationVariables
+>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useLoginMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    LoginMutation,
+    LoginMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(
+    LoginDocument,
+    baseOptions
+  );
+}
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = ApolloReactCommon.MutationResult<
+  LoginMutation
+>;
+export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  LoginMutation,
+  LoginMutationVariables
+>;
 export const PostsDocument = gql`
   query Posts {
     posts {
@@ -136,4 +201,53 @@ export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
 export type PostsQueryResult = ApolloReactCommon.QueryResult<
   PostsQuery,
   PostsQueryVariables
+>;
+export const SignUpDocument = gql`
+  mutation SignUp($input: SignUpInput!) {
+    signUp(signUpInput: $input) {
+      id
+      email
+    }
+  }
+`;
+export type SignUpMutationFn = ApolloReactCommon.MutationFunction<
+  SignUpMutation,
+  SignUpMutationVariables
+>;
+
+/**
+ * __useSignUpMutation__
+ *
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSignUpMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SignUpMutation,
+    SignUpMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<SignUpMutation, SignUpMutationVariables>(
+    SignUpDocument,
+    baseOptions
+  );
+}
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = ApolloReactCommon.MutationResult<
+  SignUpMutation
+>;
+export type SignUpMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SignUpMutation,
+  SignUpMutationVariables
 >;

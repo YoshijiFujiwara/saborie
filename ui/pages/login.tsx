@@ -92,11 +92,9 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
-                <NextLink href="/sign_up">
-                  <a>まだアカウントを持ってない？登録はこちら</a>
-                </NextLink>
-              </Link>
+              <NextLink href="/sign_up">
+                <a>まだアカウントを持ってない？登録はこちら</a>
+              </NextLink>
             </Grid>
           </Grid>
         </form>

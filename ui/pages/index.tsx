@@ -25,5 +25,4 @@ const IndexPage: NextPage = () => {
 };
 
 const IndexPageWithApollo = withApollo(IndexPage);
-
 export default IndexPageWithApollo;

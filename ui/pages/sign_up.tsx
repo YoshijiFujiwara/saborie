@@ -10,7 +10,10 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import NextLink from "next/link";
-import React from "react";
+import Router from "next/router";
+import React, { useEffect, useState } from "react";
+import { useSignUpMutation } from "../generated/graphql";
+import { withApollo } from "../lib/apollo";
 
 function Copyright() {
   return (
@@ -45,8 +48,49 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Sign_up() {
+const SignUp: React.FC = () => {
   const classes = useStyles();
+
+  // state
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  // effect
+  useEffect(() => {
+    if (data && data.signUp) {
+      Router.push("/");
+    }
+  });
+
+  // graphql
+  const [signUp, { loading, error, data }] = useSignUpMutation({
+    onCompleted: () => {}
+  });
+
+  // functions
+  const handleChangeEmail = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setEmail(e.target.value);
+  };
+  const handleChangePassword = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setPassword(e.target.value);
+  };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!loading && email.trim() && password.trim()) {
+      signUp({
+        variables: {
+          input: {
+            email,
+            password
+          }
+        }
+      });
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -58,7 +102,7 @@ export default function Sign_up() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -69,6 +113,8 @@ export default function Sign_up() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={handleChangeEmail}
               />
             </Grid>
             <Grid item xs={12}>
@@ -81,6 +127,8 @@ export default function Sign_up() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={handleChangePassword}
               />
             </Grid>
           </Grid>
@@ -89,17 +137,16 @@ export default function Sign_up() {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={!email.trim() || !password.trim()}
             className={classes.submit}
           >
-            Sign Up
+            ユーザー登録
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link variant="body2">
-                <NextLink href="/login">
-                  <a>すでにアカウントをお持ちですか？ログインはこちら</a>
-                </NextLink>
-              </Link>
+              <NextLink href="/login">
+                <a>すでにアカウントをお持ちですか？ログインはこちら</a>
+              </NextLink>
             </Grid>
           </Grid>
         </form>
@@ -109,4 +156,7 @@ export default function Sign_up() {
       </Box>
     </Container>
   );
-}
+};
+
+const SignUpPageWithApollo = withApollo(SignUp);
+export default SignUpPageWithApollo;
