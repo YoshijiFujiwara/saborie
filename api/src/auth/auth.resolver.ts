@@ -30,8 +30,12 @@ export class AuthResolver {
     }
 
     const jwt = this.jwt.sign({ id: user.id });
-    res.cookie('token', jwt, { httpOnly: true });
-    return user;
+    // TODO: Cookie周りが動かないので、AuthPayloadにtokenを含める方針にした😡
+    // res.cookie('token', jwt, { httpOnly: true });
+    return {
+      ...user,
+      token: jwt,
+    };
   }
 
   @Mutation()
@@ -53,8 +57,11 @@ export class AuthResolver {
     });
 
     const jwt = this.jwt.sign({ id: user.id });
-    res.cookie('token', jwt, { httpOnly: true });
-
-    return user;
+    // TODO: Cookie周りが動かないので、AuthPayloadにtokenを含める方針にした😡
+    // res.cookie('token', jwt, { httpOnly: true });
+    return {
+      ...user,
+      token: jwt,
+    };
   }
 }

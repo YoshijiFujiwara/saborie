@@ -23,6 +23,7 @@ export class SignUpInput {
 export class AuthPayload {
   id: string;
   email: string;
+  token: string;
 }
 
 export abstract class IMutation {

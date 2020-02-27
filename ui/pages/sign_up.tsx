@@ -48,24 +48,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUp: React.FC = () => {
+const SignUpPage: React.FC = () => {
   const classes = useStyles();
 
   // state
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  // effect
-  useEffect(() => {
-    if (data && data.signUp) {
-      Router.push("/");
+  // graphql
+  const [signUp, { loading, error, data }] = useSignUpMutation({
+    onCompleted: () => {
+      console.log("complete");
     }
   });
 
-  // graphql
-  const [signUp, { loading, error, data }] = useSignUpMutation({
-    onCompleted: () => {}
-  });
+  // effect
+  useEffect(() => {
+    if (data && data.signUp) {
+      // Router.push("/");
+      alert("サインアップできたやで");
+      console.log(data);
+    }
+    if (error) {
+      alert("エラーやで");
+      console.error(error);
+    }
+  }, [data, error]);
 
   // functions
   const handleChangeEmail = (
@@ -158,5 +166,5 @@ const SignUp: React.FC = () => {
   );
 };
 
-const SignUpPageWithApollo = withApollo(SignUp);
+const SignUpPageWithApollo = withApollo(SignUpPage);
 export default SignUpPageWithApollo;

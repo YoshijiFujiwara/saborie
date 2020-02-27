@@ -9,8 +9,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+// import Cookies from "js-cookie";
 import NextLink from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useLoginMutation } from "../generated/graphql";
+import { withApollo } from "../lib/apollo";
 
 function Copyright() {
   return (
@@ -45,8 +48,57 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignIn() {
+const LoginPage = () => {
   const classes = useStyles();
+
+  // state
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  // graphql
+  const [login, { loading, error, data }] = useLoginMutation({
+    onCompleted: () => {
+      console.log("complete login");
+    }
+  });
+
+  // effect
+  useEffect(() => {
+    if (data && data.login) {
+      // Router.push("/");
+      alert("ログインできたやで");
+      console.log(data);
+    }
+    if (error) {
+      alert("エラーやで");
+      console.error(error);
+    }
+  }, [data, error]);
+
+  // functions
+  const handleChangeEmail = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setEmail(e.target.value);
+  };
+  const handleChangePassword = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setPassword(e.target.value);
+  };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!loading && email.trim() && password.trim()) {
+      login({
+        variables: {
+          input: {
+            email,
+            password
+          }
+        }
+      });
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -58,7 +110,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -69,6 +121,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={handleChangeEmail}
           />
           <TextField
             variant="outlined"
@@ -80,12 +134,15 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password}
+            onChange={handleChangePassword}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
+            disabled={!email.trim() || !password.trim()}
             className={classes.submit}
           >
             Sign In
@@ -104,4 +161,7 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-}
+};
+
+const LoginPageWithApollo = withApollo(LoginPage);
+export default LoginPageWithApollo;

@@ -15,6 +15,7 @@ export type AuthPayload = {
   __typename?: "AuthPayload";
   id: Scalars["ID"];
   email: Scalars["String"];
+  token: Scalars["String"];
 };
 
 export type LoginInput = {
@@ -83,7 +84,10 @@ export type LoginMutationVariables = {
 };
 
 export type LoginMutation = { __typename?: "Mutation" } & {
-  login: { __typename?: "AuthPayload" } & Pick<AuthPayload, "id" | "email">;
+  login: { __typename?: "AuthPayload" } & Pick<
+    AuthPayload,
+    "id" | "email" | "token"
+  >;
 };
 
 export type PostsQueryVariables = {};
@@ -97,7 +101,10 @@ export type SignUpMutationVariables = {
 };
 
 export type SignUpMutation = { __typename?: "Mutation" } & {
-  signUp: { __typename?: "AuthPayload" } & Pick<AuthPayload, "id" | "email">;
+  signUp: { __typename?: "AuthPayload" } & Pick<
+    AuthPayload,
+    "id" | "email" | "token"
+  >;
 };
 
 export const LoginDocument = gql`
@@ -105,6 +112,7 @@ export const LoginDocument = gql`
     login(loginInput: $input) {
       id
       email
+      token
     }
   }
 `;
@@ -207,6 +215,7 @@ export const SignUpDocument = gql`
     signUp(signUpInput: $input) {
       id
       email
+      token
     }
   }
 `;
