@@ -1,16 +1,15 @@
 import { createContext } from "react";
+import { State } from "../pages/_app";
 
-export type TContext = {
-  currentUser?: {
-    id: string;
-    email: string;
+// [FIY] https://stackoverflow.com/questions/54577865/react-createcontext-issue-in-typescript/54667477
+export type TContextProps = {
+  state: State;
+  dispatchFunctions: {
+    loginUser: Function;
+    signOutUser: Function;
   };
-  isAuth: boolean;
 };
 
-const Context = createContext<TContext>({
-  currentUser: null,
-  isAuth: false
-});
+const Context = createContext({} as TContextProps);
 
 export default Context;

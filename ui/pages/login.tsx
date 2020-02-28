@@ -9,9 +9,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-// import Cookies from "js-cookie";
 import NextLink from "next/link";
-import React, { useEffect, useState } from "react";
+import Router from "next/router";
+import React, { useContext, useEffect, useState } from "react";
+import Context from "../contexts";
 import { useLoginMutation } from "../generated/graphql";
 import { withApollo } from "../lib/apollo";
 
@@ -50,6 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 const LoginPage = () => {
   const classes = useStyles();
+  const { state, dispatchFunctions } = useContext(Context);
 
   // state
   const [email, setEmail] = useState<string>("");
@@ -65,15 +67,24 @@ const LoginPage = () => {
   // effect
   useEffect(() => {
     if (data && data.login) {
-      // Router.push("/");
-      alert("ログインできたやで");
-      console.log(data);
+      const { id, email, token } = data.login;
+      dispatchFunctions.loginUser(
+        {
+          id,
+          email
+        },
+        token
+      );
+      Router.push("/");
     }
     if (error) {
-      alert("エラーやで");
       console.error(error);
     }
-  }, [data, error]);
+    // もしログイン済みならリダイレクト
+    if (state.currentUser && state.token) {
+      Router.push("/");
+    }
+  }, [data, error, state]);
 
   // functions
   const handleChangeEmail = (

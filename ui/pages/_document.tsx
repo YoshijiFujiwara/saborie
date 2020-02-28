@@ -5,6 +5,8 @@ import React from "react";
 
 const theme = responsiveFontSizes(createMuiTheme());
 
+// _document.jsはサーバーサイドのみでレンダリングされ、クライアントサイドでは使われません。
+// onClickのようなイベントハンドラはここに追加しないでください。
 class MyDocument extends Document {
   render() {
     return (

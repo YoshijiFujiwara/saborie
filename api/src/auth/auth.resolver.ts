@@ -50,7 +50,6 @@ export class AuthResolver {
       throw Error('Email is already in use');
     }
     const password = await bcryptjs.hash(signUpInputDto.password, 10);
-
     const user = await this.prisma.client.createUser({
       ...signUpInputDto,
       password,

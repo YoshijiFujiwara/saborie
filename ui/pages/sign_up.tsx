@@ -11,9 +11,11 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import NextLink from "next/link";
 import Router from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Context from "../contexts";
 import { useSignUpMutation } from "../generated/graphql";
 import { withApollo } from "../lib/apollo";
+import { ReducerType } from "../reducers";
 
 function Copyright() {
   return (
@@ -50,6 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignUpPage: React.FC = () => {
   const classes = useStyles();
+  const { state, dispatchFunctions } = useContext(Context);
 
   // state
   const [email, setEmail] = useState<string>("");
@@ -58,22 +61,32 @@ const SignUpPage: React.FC = () => {
   // graphql
   const [signUp, { loading, error, data }] = useSignUpMutation({
     onCompleted: () => {
-      console.log("complete");
+      setEmail("");
+      setPassword("");
     }
   });
 
   // effect
   useEffect(() => {
     if (data && data.signUp) {
-      // Router.push("/");
-      alert("サインアップできたやで");
-      console.log(data);
+      const { id, email, token } = data.signUp;
+      dispatchFunctions.loginUser(
+        {
+          id,
+          email
+        },
+        token
+      );
+      Router.push("/");
     }
     if (error) {
-      alert("エラーやで");
       console.error(error);
     }
-  }, [data, error]);
+    // もしログイン済みならリダイレクト
+    if (state.currentUser && state.token) {
+      Router.push("/");
+    }
+  }, [data, error, state]);
 
   // functions
   const handleChangeEmail = (
