@@ -93,7 +93,11 @@ export type LoginMutation = { __typename?: "Mutation" } & {
 export type PostsQueryVariables = {};
 
 export type PostsQuery = { __typename?: "Query" } & {
-  posts: Array<{ __typename?: "Post" } & Pick<Post, "id" | "title" | "body">>;
+  posts: Array<
+    { __typename?: "Post" } & Pick<Post, "id" | "title" | "body"> & {
+        author: { __typename?: "User" } & Pick<User, "id" | "email">;
+      }
+  >;
 };
 
 export type SignUpMutationVariables = {
@@ -163,6 +167,10 @@ export const PostsDocument = gql`
       id
       title
       body
+      author {
+        id
+        email
+      }
     }
   }
 `;

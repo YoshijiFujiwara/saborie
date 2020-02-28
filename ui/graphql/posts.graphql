@@ -1,7 +1,11 @@
 query Posts {
-	posts {
-		id
-		title
-		body
-	}
+  posts {
+    id
+    title
+    body
+    author {
+      id
+      email
+    }
+  }
 }
