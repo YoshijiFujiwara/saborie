@@ -15,7 +15,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Context from "../contexts";
 import { useSignUpMutation } from "../generated/graphql";
 import { withApollo } from "../lib/apollo";
-import { ReducerType } from "../reducers";
 
 function Copyright() {
   return (

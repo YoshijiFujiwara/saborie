@@ -19,8 +19,10 @@ import Typography from "@material-ui/core/Typography";
 import CreateIcon from "@material-ui/icons/Create";
 import ListIcon from "@material-ui/icons/List";
 import MenuIcon from "@material-ui/icons/Menu";
+import PersonIcon from "@material-ui/icons/Person";
 import SearchIcon from "@material-ui/icons/Search";
-import React from "react";
+import React, { useContext } from "react";
+import Context from "../contexts";
 
 const drawerWidth = 240;
 
@@ -77,6 +79,9 @@ export default function DefaultLayout({ children }) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { state } = useContext(Context);
+
+  console.log(state);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -93,6 +98,14 @@ export default function DefaultLayout({ children }) {
             <ListItemText primary={title} />
           </ListItem>
         ))}
+        {state.currentUser && state.token && (
+          <ListItem button>
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText primary={state.currentUser.email} />
+          </ListItem>
+        )}
       </List>
     </div>
   );
@@ -100,22 +113,6 @@ export default function DefaultLayout({ children }) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Saborie
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">

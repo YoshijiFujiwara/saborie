@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
 import { usePostsQuery } from "../generated/graphql";
+import DefaultLayout from "../layouts/default";
 import { withApollo } from "../lib/apollo";
 
 const IndexPage: NextPage = () => {
@@ -13,7 +14,7 @@ const IndexPage: NextPage = () => {
     return <p>An error occurred.</p>;
   }
 
-  return posts ? (
+  const renderPosts = posts ? (
     <ul>
       {posts.map((post, index) => {
         return <li key={index}>{post.title}</li>;
@@ -22,6 +23,8 @@ const IndexPage: NextPage = () => {
   ) : (
     <p>There are no posts here.</p>
   );
+
+  return <DefaultLayout>{renderPosts}</DefaultLayout>;
 };
 
 const IndexPageWithApollo = withApollo(IndexPage);

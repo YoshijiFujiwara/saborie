@@ -1,6 +1,6 @@
 import Cookie from "js-cookie";
-import App, { Container } from "next/app";
-import React, { createContext } from "react";
+import App from "next/app";
+import React from "react";
 import Context from "../contexts";
 
 type CurrentUser = {
@@ -29,12 +29,12 @@ class MyApp extends App {
     const cookieToken = Cookie.get(ECookie.TOKEN);
 
     this.setState({
-      currentUser: cookieCurrentUser ? cookieCurrentUser : null,
+      currentUser: cookieCurrentUser ? JSON.parse(cookieCurrentUser) : null,
       token: cookieToken ? cookieToken : null
     });
   }
 
-  loginUser = (user: State["currentUser"], token: State["token"]) => {
+  loginUser = (user: State["currentUser"], token: State["token"]): void => {
     this.setState(prevState => ({
       ...prevState,
       currentUser: user,
@@ -43,7 +43,7 @@ class MyApp extends App {
     Cookie.set(ECookie.CURRENT_USER, user, { expires: 7 });
     Cookie.set(ECookie.TOKEN, token, { expires: 1 });
   };
-  signOutUser = () => {
+  signOutUser = (): void => {
     this.setState(prevState => ({
       ...prevState,
       currentUser: null,
