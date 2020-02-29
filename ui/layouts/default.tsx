@@ -21,6 +21,7 @@ import ListIcon from "@material-ui/icons/List";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
 import SearchIcon from "@material-ui/icons/Search";
+import Router from "next/router";
 import React, { useContext } from "react";
 import Context from "../contexts";
 
@@ -62,16 +63,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const drawerItems = [
   {
-    title: "一覧",
-    icon: <ListIcon />
+    title: "一覧やで",
+    icon: <ListIcon />,
+    linkUrl: "/"
   },
   {
-    title: "検索",
-    icon: <SearchIcon />
+    title: "検索やで",
+    icon: <SearchIcon />,
+    linkUrl: "/search"
   },
   {
-    title: "作成",
-    icon: <CreateIcon />
+    title: "作成するやで",
+    icon: <CreateIcon />,
+    linkUrl: "/create"
   }
 ];
 
@@ -92,8 +96,14 @@ export default function DefaultLayout({ children }) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {drawerItems.map(({ title, icon }, index) => (
-          <ListItem button key={index}>
+        {drawerItems.map(({ title, icon, linkUrl }, index) => (
+          <ListItem
+            button
+            key={index}
+            onClick={() => {
+              Router.push(linkUrl);
+            }}
+          >
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={title} />
           </ListItem>

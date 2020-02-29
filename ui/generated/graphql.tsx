@@ -79,6 +79,16 @@ export type User = {
   updatedAt: Scalars["String"];
 };
 
+export type CreatePostMutationVariables = {
+  input?: Maybe<PostInput>;
+};
+
+export type CreatePostMutation = { __typename?: "Mutation" } & {
+  createPost: { __typename?: "Post" } & Pick<Post, "id" | "title" | "body"> & {
+      author: { __typename?: "User" } & Pick<User, "id" | "email">;
+    };
+};
+
 export type LoginMutationVariables = {
   input: LoginInput;
 };
@@ -111,6 +121,62 @@ export type SignUpMutation = { __typename?: "Mutation" } & {
   >;
 };
 
+export const CreatePostDocument = gql`
+  mutation CreatePost($input: PostInput) {
+    createPost(postInput: $input) {
+      id
+      title
+      body
+      author {
+        id
+        email
+      }
+    }
+  }
+`;
+export type CreatePostMutationFn = ApolloReactCommon.MutationFunction<
+  CreatePostMutation,
+  CreatePostMutationVariables
+>;
+
+/**
+ * __useCreatePostMutation__
+ *
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreatePostMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CreatePostMutation,
+    CreatePostMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    CreatePostMutation,
+    CreatePostMutationVariables
+  >(CreatePostDocument, baseOptions);
+}
+export type CreatePostMutationHookResult = ReturnType<
+  typeof useCreatePostMutation
+>;
+export type CreatePostMutationResult = ApolloReactCommon.MutationResult<
+  CreatePostMutation
+>;
+export type CreatePostMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CreatePostMutation,
+  CreatePostMutationVariables
+>;
 export const LoginDocument = gql`
   mutation Login($input: LoginInput!) {
     login(loginInput: $input) {

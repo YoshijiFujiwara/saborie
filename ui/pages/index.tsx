@@ -23,7 +23,7 @@ const IndexPage: NextPage = () => {
           <PostList posts={posts as Post[]} />
         </Grid>
         <Grid item xs={6}>
-          右やで
+          コメント一覧が見れるようにする予定やで！
         </Grid>
       </Grid>
     </DefaultLayout>
