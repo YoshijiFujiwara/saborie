@@ -42,6 +42,8 @@ export class Post {
 }
 
 export abstract class IQuery {
+    abstract me(): AuthPayload | Promise<AuthPayload>;
+
     abstract post(id: string): Post | Promise<Post>;
 
     abstract posts(): Post[] | Promise<Post[]>;

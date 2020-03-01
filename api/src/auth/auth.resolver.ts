@@ -1,11 +1,13 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
-import { LoginInput } from '../graphql.schema.generated';
-import { ResGql } from '../shared/decorators/decorators';
+import { LoginInput, User } from '../graphql.schema.generated';
+import { ResGql, GqlUser } from '../shared/decorators/decorators';
 import * as bcryptjs from 'bcryptjs';
 import { Response } from 'express';
 import { SignUpInputDto } from './sign-up-input.dto';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from './graphql-auth.guard';
 
 @Resolver('Auth')
 export class AuthResolver {
@@ -13,6 +15,16 @@ export class AuthResolver {
     private readonly jwt: JwtService,
     private readonly prisma: PrismaService,
   ) {}
+
+  @Query()
+  @UseGuards(GqlAuthGuard)
+  async me(@GqlUser() user: User) {
+    const { id, email } = user;
+    return {
+      id,
+      email,
+    };
+  }
 
   @Mutation()
   async login(
