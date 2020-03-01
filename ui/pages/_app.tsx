@@ -1,9 +1,17 @@
+import { createMuiTheme, Theme } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
 import App from "next/app";
 import React, { useReducer, useEffect } from "react";
 import Context, { InitialState } from "../contexts";
 import { useMeQuery } from "../generated/graphql";
 import { withApollo } from "../lib/apollo";
 import reducer, { EReducer } from "../reducers";
+
+const theme: Theme = createMuiTheme({
+  palette: {
+    type: "light"
+  }
+});
 
 // [FIY] https://github.com/zeit/next.js/issues/7515
 const MyFunctionComponent: React.FC = ({ children }) => {
@@ -30,7 +38,11 @@ const MyFunctionComponent: React.FC = ({ children }) => {
     }
   }, [meData]);
 
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <Context.Provider value={value}>{children}</Context.Provider>
+    </ThemeProvider>
+  );
 };
 const MyFunctionComponentWithApollo: React.FC = withApollo(MyFunctionComponent);
 
