@@ -121,7 +121,7 @@ const SignUpPage: NextPage = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          ユーザー登録
         </Typography>
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -131,7 +131,7 @@ const SignUpPage: NextPage = () => {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="メールアドレス"
                 name="email"
                 autoComplete="email"
                 value={email}
@@ -144,7 +144,7 @@ const SignUpPage: NextPage = () => {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="パスワード"
                 type="password"
                 id="password"
                 autoComplete="current-password"
