@@ -17,6 +17,19 @@ export type AuthPayload = {
   email: Scalars['String'],
 };
 
+export type Comment = {
+   __typename?: 'Comment',
+  id: Scalars['ID'],
+  body: Scalars['String'],
+  post: Post,
+  author: User,
+};
+
+export type CommentInput = {
+  postId: Scalars['ID'],
+  body: Scalars['String'],
+};
+
 export type LoginInput = {
   email: Scalars['String'],
   password: Scalars['String'],
@@ -28,6 +41,7 @@ export type Mutation = {
   login: AuthPayload,
   signOut: Scalars['Boolean'],
   createPost: Post,
+  createComment: Comment,
 };
 
 
@@ -45,6 +59,11 @@ export type MutationCreatePostArgs = {
   postInput?: Maybe<PostInput>
 };
 
+
+export type MutationCreateCommentArgs = {
+  commentInput?: Maybe<CommentInput>
+};
+
 export type Post = {
    __typename?: 'Post',
   id: Scalars['ID'],
@@ -53,6 +72,7 @@ export type Post = {
   minutes: Scalars['Int'],
   excuse?: Maybe<Scalars['String']>,
   author: User,
+  comments?: Maybe<Array<Maybe<Comment>>>,
 };
 
 export type PostInput = {
@@ -87,6 +107,26 @@ export type User = {
   createdAt: Scalars['String'],
   updatedAt: Scalars['String'],
 };
+
+export type CreateCommentMutationVariables = {
+  input?: Maybe<CommentInput>
+};
+
+
+export type CreateCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { createComment: (
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'body'>
+    & { post: (
+      { __typename?: 'Post' }
+      & Pick<Post, 'id'>
+    ), author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email'>
+    ) }
+  ) }
+);
 
 export type CreatePostMutationVariables = {
   input?: Maybe<PostInput>
@@ -140,7 +180,14 @@ export type PostsQuery = (
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'email'>
-    ) }
+    ), comments: Maybe<Array<Maybe<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'body'>
+      & { author: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'email'>
+      ) }
+    )>>> }
   )> }
 );
 
@@ -166,6 +213,46 @@ export type SignUpMutation = (
 );
 
 
+export const CreateCommentDocument = gql`
+    mutation CreateComment($input: CommentInput) {
+  createComment(commentInput: $input) {
+    id
+    body
+    post {
+      id
+    }
+    author {
+      id
+      email
+    }
+  }
+}
+    `;
+export type CreateCommentMutationFn = ApolloReactCommon.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, baseOptions);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = ApolloReactCommon.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput) {
   createPost(postInput: $input) {
@@ -283,6 +370,14 @@ export const PostsDocument = gql`
     author {
       id
       email
+    }
+    comments {
+      id
+      body
+      author {
+        id
+        email
+      }
     }
   }
 }

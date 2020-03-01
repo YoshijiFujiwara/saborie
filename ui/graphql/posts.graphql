@@ -9,5 +9,13 @@ query Posts {
       id
       email
     }
+    comments {
+      id
+      body
+      author {
+        id
+        email
+      }
+    }
   }
 }
