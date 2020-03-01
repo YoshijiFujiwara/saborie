@@ -31,7 +31,7 @@ input PostInput {
 type AuthPayload {
 	id: ID!
 	email: String!
-	token: String!
+	# token: String!
 }
 
 type Query {

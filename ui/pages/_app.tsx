@@ -10,7 +10,6 @@ type CurrentUser = {
 
 export type State = {
   currentUser: CurrentUser;
-  token: string;
 };
 
 export enum ECookie {
@@ -20,37 +19,22 @@ export enum ECookie {
 
 class MyApp extends App {
   state: State = {
-    currentUser: null,
-    token: null
+    currentUser: null
   };
 
-  componentDidMount() {
-    const cookieCurrentUser = Cookie.get(ECookie.CURRENT_USER);
-    const cookieToken = Cookie.get(ECookie.TOKEN);
+  componentDidMount() {}
 
-    this.setState({
-      currentUser: cookieCurrentUser ? JSON.parse(cookieCurrentUser) : null,
-      token: cookieToken ? cookieToken : null
-    });
-  }
-
-  loginUser = (user: State["currentUser"], token: State["token"]): void => {
+  loginUser = (user: State["currentUser"]): void => {
     this.setState(prevState => ({
       ...prevState,
-      currentUser: user,
-      token
+      currentUser: user
     }));
-    Cookie.set(ECookie.CURRENT_USER, user, { expires: 7 });
-    Cookie.set(ECookie.TOKEN, token, { expires: 1 });
   };
   signOutUser = (): void => {
     this.setState(prevState => ({
       ...prevState,
-      currentUser: null,
-      token: null
+      currentUser: null
     }));
-    Cookie.remove(ECookie.CURRENT_USER);
-    Cookie.remove(ECookie.TOKEN);
   };
 
   render() {

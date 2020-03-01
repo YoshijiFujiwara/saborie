@@ -20,7 +20,11 @@ export class GraphqlOptions implements GqlOptionsFactory {
       debug: true,
       introspection: true,
       playground: true,
-      cors: true,
+      // cookieの取り扱いには、cors: true だけでは足りない!!
+      cors: {
+        credentials: true,
+        origin: true,
+      },
     };
   }
 }

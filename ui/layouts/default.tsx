@@ -108,7 +108,7 @@ export default function DefaultLayout({ children }) {
             <ListItemText primary={title} />
           </ListItem>
         ))}
-        {state.currentUser && state.token && (
+        {state.currentUser && (
           <ListItem button>
             <ListItemIcon>
               <PersonIcon />
