@@ -13,6 +13,14 @@ type Post {
 	minutes: Int!
 	excuse: String
 	author: User!
+	comments: [Comment]
+}
+
+type Comment {
+	id: ID!
+	body: String!
+	post: Post!
+	author: User!
 }
 
 input SignUpInput {
@@ -32,6 +40,11 @@ input PostInput {
 	excuse: String
 }
 
+input CommentInput {
+	postId: ID!
+	body: String!
+}
+
 type AuthPayload {
 	id: ID!
 	email: String!
@@ -48,4 +61,5 @@ type Mutation {
 	login(loginInput: LoginInput): AuthPayload!
 	signOut: Boolean!
 	createPost(postInput: PostInput): Post!
+	createComment(commentInput: CommentInput): Comment!
 }

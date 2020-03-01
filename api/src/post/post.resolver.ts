@@ -7,7 +7,7 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
-import { Post } from '../graphql.schema.generated';
+import { Post, Comment } from '../graphql.schema.generated';
 import { GqlUser } from '../shared/decorators/decorators';
 import { User } from '../../generated/prisma-client';
 import { UseGuards } from '@nestjs/common';
@@ -31,6 +31,11 @@ export class PostResolver {
   @ResolveProperty()
   async author(@Parent() { id }: Post) {
     return this.prisma.client.post({ id }).author();
+  }
+
+  @ResolveProperty()
+  async comments(@Parent() { id }: Post) {
+    return this.prisma.client.post({ id }).comments();
   }
 
   @Mutation()
