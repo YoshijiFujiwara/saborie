@@ -31,6 +31,8 @@ export abstract class IMutation {
 
     abstract login(loginInput?: LoginInput): AuthPayload | Promise<AuthPayload>;
 
+    abstract signOut(): boolean | Promise<boolean>;
+
     abstract createPost(postInput?: PostInput): Post | Promise<Post>;
 }
 

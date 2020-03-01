@@ -71,4 +71,13 @@ export class AuthResolver {
       ...user,
     };
   }
+
+  @Mutation()
+  @UseGuards(GqlAuthGuard)
+  async signOut(@ResGql() res: Response, @GqlUser() user: User) {
+    // [FIY] https://stackoverflow.com/questions/27978868/destroy-cookie-nodejs
+    // 期限切れのtokenをセット
+    res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
+    return true;
+  }
 }
