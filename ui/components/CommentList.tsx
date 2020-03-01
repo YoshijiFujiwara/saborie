@@ -35,8 +35,8 @@ const CommentList: React.FC<Props> = ({ comments }) => {
   return (
     <List className={classes.root}>
       {comments.map((comment, index) => (
-        <>
-          <ListItem key={`${index}-item`} alignItems="flex-start">
+        <React.Fragment key={index}>
+          <ListItem alignItems="flex-start">
             <ListItemAvatar>
               <Avatar aria-label="recipe" className={classes.avatar}>
                 ほ
@@ -59,9 +59,9 @@ const CommentList: React.FC<Props> = ({ comments }) => {
             />
           </ListItem>
           {index !== comments.length - 1 && (
-            <Divider key={`${index}-divider`} variant="inset" component="li" />
+            <Divider variant="inset" component="li" />
           )}
-        </>
+        </React.Fragment>
       ))}
     </List>
   );
