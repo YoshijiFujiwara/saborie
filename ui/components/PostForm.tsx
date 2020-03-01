@@ -7,8 +7,10 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Router from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import Context from "../contexts";
 import { useCreatePostMutation } from "../generated/graphql";
+import { EReducer } from "../reducers";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 const PostForm: React.FC = () => {
   const classes = useStyles();
+  const { state, dispatch } = useContext(Context);
 
   // state
   const [todo, setTodo] = useState<string>("");
@@ -46,12 +49,19 @@ const PostForm: React.FC = () => {
       setMistake("");
       setMinutes(0);
       setExcuse("");
-      Router.push("/");
     },
     onError: e => {
       console.error(e);
     }
   });
+
+  // effect
+  useEffect(() => {
+    if (!loading && data) {
+      dispatch({ type: EReducer.ADD_POST, payload: data.createPost });
+      Router.push("/");
+    }
+  }, [data]);
 
   // functions
   const handleChangeTodo = (

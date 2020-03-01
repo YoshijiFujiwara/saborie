@@ -61,7 +61,8 @@ const LoginPage: NextPage = () => {
   // graphql
   const [login, { loading, error, data }] = useLoginMutation({
     onCompleted: () => {
-      console.log("complete login");
+      setEmail("");
+      setPassword("");
     }
   });
 
