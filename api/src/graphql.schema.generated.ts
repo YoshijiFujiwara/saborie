@@ -11,6 +11,10 @@ export class CommentInput {
     body: string;
 }
 
+export class LikeInput {
+    postId: string;
+}
+
 export class LoginInput {
     email: string;
     password: string;
@@ -40,6 +44,12 @@ export class Comment {
     author: User;
 }
 
+export class Like {
+    id: string;
+    post: Post;
+    author: User;
+}
+
 export abstract class IMutation {
     abstract signUp(signUpInput?: SignUpInput): AuthPayload | Promise<AuthPayload>;
 
@@ -50,6 +60,8 @@ export abstract class IMutation {
     abstract createPost(postInput?: PostInput): Post | Promise<Post>;
 
     abstract createComment(commentInput?: CommentInput): Comment | Promise<Comment>;
+
+    abstract switchLike(likeInput?: LikeInput): Like | Promise<Like>;
 }
 
 export class Post {
@@ -60,6 +72,7 @@ export class Post {
     excuse?: string;
     author: User;
     comments?: Comment[];
+    likes?: Like[];
 }
 
 export abstract class IQuery {

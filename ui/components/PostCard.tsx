@@ -33,9 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       backgroundColor: red[500]
-    },
-    card: {
-      backgroundColor: "lightGrey"
     }
   })
 );
@@ -56,7 +53,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
   };
 
   return (
-    <Card className={post.id === state.displayPostId ? classes.card : ""}>
+    <Card>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -79,7 +76,11 @@ const PostCard: React.FC<Props> = ({ post }) => {
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
-        <IconButton onClick={handleCommentButtonClick} aria-label="comment">
+        <IconButton
+          onClick={handleCommentButtonClick}
+          aria-label="comment"
+          color={post.id === state.displayPostId ? "primary" : "default"}
+        >
           <ChatBubbleIcon />
         </IconButton>
       </CardActions>

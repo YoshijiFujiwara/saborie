@@ -6,6 +6,10 @@ export const typeDefs = /* GraphQL */ `type AggregateComment {
   count: Int!
 }
 
+type AggregateLike {
+  count: Int!
+}
+
 type AggregatePost {
   count: Int!
 }
@@ -247,6 +251,183 @@ input CommentWhereUniqueInput {
 
 scalar DateTime
 
+type Like {
+  id: ID!
+  post: Post!
+  author: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type LikeConnection {
+  pageInfo: PageInfo!
+  edges: [LikeEdge]!
+  aggregate: AggregateLike!
+}
+
+input LikeCreateInput {
+  id: ID
+  post: PostCreateOneWithoutLikesInput!
+  author: UserCreateOneInput!
+}
+
+input LikeCreateManyWithoutPostInput {
+  create: [LikeCreateWithoutPostInput!]
+  connect: [LikeWhereUniqueInput!]
+}
+
+input LikeCreateWithoutPostInput {
+  id: ID
+  author: UserCreateOneInput!
+}
+
+type LikeEdge {
+  node: Like!
+  cursor: String!
+}
+
+enum LikeOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type LikePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input LikeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [LikeScalarWhereInput!]
+  OR: [LikeScalarWhereInput!]
+  NOT: [LikeScalarWhereInput!]
+}
+
+type LikeSubscriptionPayload {
+  mutation: MutationType!
+  node: Like
+  updatedFields: [String!]
+  previousValues: LikePreviousValues
+}
+
+input LikeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: LikeWhereInput
+  AND: [LikeSubscriptionWhereInput!]
+  OR: [LikeSubscriptionWhereInput!]
+  NOT: [LikeSubscriptionWhereInput!]
+}
+
+input LikeUpdateInput {
+  post: PostUpdateOneRequiredWithoutLikesInput
+  author: UserUpdateOneRequiredInput
+}
+
+input LikeUpdateManyWithoutPostInput {
+  create: [LikeCreateWithoutPostInput!]
+  delete: [LikeWhereUniqueInput!]
+  connect: [LikeWhereUniqueInput!]
+  set: [LikeWhereUniqueInput!]
+  disconnect: [LikeWhereUniqueInput!]
+  update: [LikeUpdateWithWhereUniqueWithoutPostInput!]
+  upsert: [LikeUpsertWithWhereUniqueWithoutPostInput!]
+  deleteMany: [LikeScalarWhereInput!]
+}
+
+input LikeUpdateWithoutPostDataInput {
+  author: UserUpdateOneRequiredInput
+}
+
+input LikeUpdateWithWhereUniqueWithoutPostInput {
+  where: LikeWhereUniqueInput!
+  data: LikeUpdateWithoutPostDataInput!
+}
+
+input LikeUpsertWithWhereUniqueWithoutPostInput {
+  where: LikeWhereUniqueInput!
+  update: LikeUpdateWithoutPostDataInput!
+  create: LikeCreateWithoutPostInput!
+}
+
+input LikeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  post: PostWhereInput
+  author: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [LikeWhereInput!]
+  OR: [LikeWhereInput!]
+  NOT: [LikeWhereInput!]
+}
+
+input LikeWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
@@ -256,6 +437,11 @@ type Mutation {
   upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteManyComments(where: CommentWhereInput): BatchPayload!
+  createLike(data: LikeCreateInput!): Like!
+  updateLike(data: LikeUpdateInput!, where: LikeWhereUniqueInput!): Like
+  upsertLike(where: LikeWhereUniqueInput!, create: LikeCreateInput!, update: LikeUpdateInput!): Like!
+  deleteLike(where: LikeWhereUniqueInput!): Like
+  deleteManyLikes(where: LikeWhereInput): BatchPayload!
   createPost(data: PostCreateInput!): Post!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
@@ -295,6 +481,7 @@ type Post {
   excuse: String
   author: User!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -313,6 +500,7 @@ input PostCreateInput {
   excuse: String
   author: UserCreateOneWithoutPostInput!
   comments: CommentCreateManyWithoutPostInput
+  likes: LikeCreateManyWithoutPostInput
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -325,6 +513,11 @@ input PostCreateOneWithoutCommentsInput {
   connect: PostWhereUniqueInput
 }
 
+input PostCreateOneWithoutLikesInput {
+  create: PostCreateWithoutLikesInput
+  connect: PostWhereUniqueInput
+}
+
 input PostCreateWithoutAuthorInput {
   id: ID
   todo: String!
@@ -332,6 +525,7 @@ input PostCreateWithoutAuthorInput {
   minutes: Int!
   excuse: String
   comments: CommentCreateManyWithoutPostInput
+  likes: LikeCreateManyWithoutPostInput
 }
 
 input PostCreateWithoutCommentsInput {
@@ -341,6 +535,17 @@ input PostCreateWithoutCommentsInput {
   minutes: Int!
   excuse: String
   author: UserCreateOneWithoutPostInput!
+  likes: LikeCreateManyWithoutPostInput
+}
+
+input PostCreateWithoutLikesInput {
+  id: ID
+  todo: String!
+  mistake: String!
+  minutes: Int!
+  excuse: String
+  author: UserCreateOneWithoutPostInput!
+  comments: CommentCreateManyWithoutPostInput
 }
 
 type PostEdge {
@@ -486,6 +691,7 @@ input PostUpdateInput {
   excuse: String
   author: UserUpdateOneRequiredWithoutPostInput
   comments: CommentUpdateManyWithoutPostInput
+  likes: LikeUpdateManyWithoutPostInput
 }
 
 input PostUpdateManyDataInput {
@@ -526,12 +732,20 @@ input PostUpdateOneRequiredWithoutCommentsInput {
   connect: PostWhereUniqueInput
 }
 
+input PostUpdateOneRequiredWithoutLikesInput {
+  create: PostCreateWithoutLikesInput
+  update: PostUpdateWithoutLikesDataInput
+  upsert: PostUpsertWithoutLikesInput
+  connect: PostWhereUniqueInput
+}
+
 input PostUpdateWithoutAuthorDataInput {
   todo: String
   mistake: String
   minutes: Int
   excuse: String
   comments: CommentUpdateManyWithoutPostInput
+  likes: LikeUpdateManyWithoutPostInput
 }
 
 input PostUpdateWithoutCommentsDataInput {
@@ -540,6 +754,16 @@ input PostUpdateWithoutCommentsDataInput {
   minutes: Int
   excuse: String
   author: UserUpdateOneRequiredWithoutPostInput
+  likes: LikeUpdateManyWithoutPostInput
+}
+
+input PostUpdateWithoutLikesDataInput {
+  todo: String
+  mistake: String
+  minutes: Int
+  excuse: String
+  author: UserUpdateOneRequiredWithoutPostInput
+  comments: CommentUpdateManyWithoutPostInput
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -550,6 +774,11 @@ input PostUpdateWithWhereUniqueWithoutAuthorInput {
 input PostUpsertWithoutCommentsInput {
   update: PostUpdateWithoutCommentsDataInput!
   create: PostCreateWithoutCommentsInput!
+}
+
+input PostUpsertWithoutLikesInput {
+  update: PostUpdateWithoutLikesDataInput!
+  create: PostCreateWithoutLikesInput!
 }
 
 input PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -627,6 +856,9 @@ input PostWhereInput {
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
   comments_none: CommentWhereInput
+  likes_every: LikeWhereInput
+  likes_some: LikeWhereInput
+  likes_none: LikeWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -656,6 +888,9 @@ type Query {
   comment(where: CommentWhereUniqueInput!): Comment
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  like(where: LikeWhereUniqueInput!): Like
+  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like]!
+  likesConnection(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LikeConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
@@ -667,6 +902,7 @@ type Query {
 
 type Subscription {
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
+  like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }

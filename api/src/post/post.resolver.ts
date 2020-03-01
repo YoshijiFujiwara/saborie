@@ -32,10 +32,13 @@ export class PostResolver {
   async author(@Parent() { id }: Post) {
     return this.prisma.client.post({ id }).author();
   }
-
   @ResolveProperty()
   async comments(@Parent() { id }: Post) {
     return this.prisma.client.post({ id }).comments();
+  }
+  @ResolveProperty()
+  async likes(@Parent() { id }: Post) {
+    return this.prisma.client.post({ id }).likes();
   }
 
   @Mutation()

@@ -14,11 +14,18 @@ type Post {
 	excuse: String
 	author: User!
 	comments: [Comment]
+	likes: [Like]
 }
 
 type Comment {
 	id: ID!
 	body: String!
+	post: Post!
+	author: User!
+}
+
+type Like {
+	id: ID!
 	post: Post!
 	author: User!
 }
@@ -45,6 +52,10 @@ input CommentInput {
 	body: String!
 }
 
+input LikeInput {
+	postId: ID!
+}
+
 type AuthPayload {
 	id: ID!
 	email: String!
@@ -62,4 +73,5 @@ type Mutation {
 	signOut: Boolean!
 	createPost(postInput: PostInput): Post!
 	createComment(commentInput: CommentInput): Comment!
+	switchLike(likeInput: LikeInput): Like
 }
