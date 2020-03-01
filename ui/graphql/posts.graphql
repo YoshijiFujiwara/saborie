@@ -17,5 +17,15 @@ query Posts {
         email
       }
     }
+    likes {
+      id
+      author {
+        id
+        email
+      }
+      post {
+        id
+      }
+    }
   }
 }

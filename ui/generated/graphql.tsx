@@ -30,6 +30,17 @@ export type CommentInput = {
   body: Scalars['String'],
 };
 
+export type Like = {
+   __typename?: 'Like',
+  id: Scalars['ID'],
+  post: Post,
+  author: User,
+};
+
+export type LikeInput = {
+  postId: Scalars['ID'],
+};
+
 export type LoginInput = {
   email: Scalars['String'],
   password: Scalars['String'],
@@ -42,6 +53,7 @@ export type Mutation = {
   signOut: Scalars['Boolean'],
   createPost: Post,
   createComment: Comment,
+  switchLike?: Maybe<Like>,
 };
 
 
@@ -64,6 +76,11 @@ export type MutationCreateCommentArgs = {
   commentInput?: Maybe<CommentInput>
 };
 
+
+export type MutationSwitchLikeArgs = {
+  likeInput?: Maybe<LikeInput>
+};
+
 export type Post = {
    __typename?: 'Post',
   id: Scalars['ID'],
@@ -73,6 +90,7 @@ export type Post = {
   excuse?: Maybe<Scalars['String']>,
   author: User,
   comments?: Maybe<Array<Maybe<Comment>>>,
+  likes?: Maybe<Array<Maybe<Like>>>,
 };
 
 export type PostInput = {
@@ -187,6 +205,16 @@ export type PostsQuery = (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'email'>
       ) }
+    )>>>, likes: Maybe<Array<Maybe<(
+      { __typename?: 'Like' }
+      & Pick<Like, 'id'>
+      & { author: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'email'>
+      ), post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id'>
+      ) }
     )>>> }
   )> }
 );
@@ -210,6 +238,26 @@ export type SignUpMutation = (
     { __typename?: 'AuthPayload' }
     & Pick<AuthPayload, 'id' | 'email'>
   ) }
+);
+
+export type SwitchLikeMutationVariables = {
+  input: LikeInput
+};
+
+
+export type SwitchLikeMutation = (
+  { __typename?: 'Mutation' }
+  & { switchLike: Maybe<(
+    { __typename?: 'Like' }
+    & Pick<Like, 'id'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email'>
+    ), post: (
+      { __typename?: 'Post' }
+      & Pick<Post, 'id'>
+    ) }
+  )> }
 );
 
 
@@ -379,6 +427,16 @@ export const PostsDocument = gql`
         email
       }
     }
+    likes {
+      id
+      author {
+        id
+        email
+      }
+      post {
+        id
+      }
+    }
   }
 }
     `;
@@ -469,3 +527,42 @@ export function useSignUpMutation(baseOptions?: ApolloReactHooks.MutationHookOpt
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = ApolloReactCommon.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = ApolloReactCommon.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const SwitchLikeDocument = gql`
+    mutation SwitchLike($input: LikeInput!) {
+  switchLike(likeInput: $input) {
+    id
+    author {
+      id
+      email
+    }
+    post {
+      id
+    }
+  }
+}
+    `;
+export type SwitchLikeMutationFn = ApolloReactCommon.MutationFunction<SwitchLikeMutation, SwitchLikeMutationVariables>;
+
+/**
+ * __useSwitchLikeMutation__
+ *
+ * To run a mutation, you first call `useSwitchLikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSwitchLikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [switchLikeMutation, { data, loading, error }] = useSwitchLikeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSwitchLikeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SwitchLikeMutation, SwitchLikeMutationVariables>) {
+        return ApolloReactHooks.useMutation<SwitchLikeMutation, SwitchLikeMutationVariables>(SwitchLikeDocument, baseOptions);
+      }
+export type SwitchLikeMutationHookResult = ReturnType<typeof useSwitchLikeMutation>;
+export type SwitchLikeMutationResult = ApolloReactCommon.MutationResult<SwitchLikeMutation>;
+export type SwitchLikeMutationOptions = ApolloReactCommon.BaseMutationOptions<SwitchLikeMutation, SwitchLikeMutationVariables>;

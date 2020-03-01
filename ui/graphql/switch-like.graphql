@@ -1,0 +1,12 @@
+mutation SwitchLike($input: LikeInput!) {
+  switchLike(likeInput: $input) {
+    id
+    author {
+      id
+      email
+    }
+    post {
+      id
+    }
+  }
+}

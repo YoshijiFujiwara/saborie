@@ -1,5 +1,5 @@
 import { TState, TPayload, User } from "../contexts";
-import { Post, Comment } from "../generated/graphql";
+import { Post, Comment, Like } from "../generated/graphql";
 
 export enum EReducer {
   // auth
@@ -10,13 +10,23 @@ export enum EReducer {
   SET_POSTS = "SET_POSTS",
   ADD_POST = "ADD_POST",
   // comment
-  SET_COMMENTS = "SET_COMMENTS",
-  ADD_COMMENT = "ADD_COMMENT"
+  ADD_COMMENT = "ADD_COMMENT",
+  // like
+  ADD_LIKE = "ADD_LIKE",
+  DELETE_LIKE = "DELETE_LIKE"
 }
 
 export type AddCommentPayload = {
   postId: string;
   comment: Comment;
+};
+export type AddLikePayload = {
+  postId: string;
+  like: Like;
+};
+export type DeleteLikePayload = {
+  postId: string;
+  authorId: string;
 };
 
 const reducer = (state: TState, { type, payload }: TPayload): TState => {
@@ -32,6 +42,7 @@ const reducer = (state: TState, { type, payload }: TPayload): TState => {
         ...state,
         currentUser: null
       };
+
     // post
     case EReducer.SET_DISPLAY_POST_ID:
       return {
@@ -48,24 +59,55 @@ const reducer = (state: TState, { type, payload }: TPayload): TState => {
         ...state,
         posts: [...state.posts, payload as Post]
       };
+
+    // comment
     case EReducer.ADD_COMMENT:
-      // eslint-disable-next-line no-case-declarations
-      const { postId, comment } = payload as AddCommentPayload;
-      // eslint-disable-next-line no-case-declarations
-      const posts = state.posts.map(post => {
-        if (post.id === postId) {
-          const comments = [...post.comments, comment];
-          return {
-            ...post,
-            comments
-          };
-        }
-        return post;
-      });
-      return {
-        ...state,
-        posts
-      };
+      return (function() {
+        const { postId, comment } = payload as AddCommentPayload;
+        const posts = state.posts.map(post => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              comments: [...post.comments, comment]
+            };
+          }
+          return post;
+        });
+        return { ...state, posts };
+      })();
+
+    // like
+    case EReducer.ADD_LIKE:
+      return (function() {
+        const { postId, like } = payload as AddLikePayload;
+        const posts = state.posts.map(post => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              likes: [...post.likes, like]
+            };
+          }
+          return post;
+        });
+        return { ...state, posts };
+      })();
+    case EReducer.DELETE_LIKE:
+      return (function() {
+        const { postId, authorId } = payload as DeleteLikePayload;
+        const posts = state.posts.map(post => {
+          if (post.id === postId) {
+            const likes = post.likes.filter(
+              item => !(item.post.id == postId && item.author.id === authorId)
+            );
+            return {
+              ...post,
+              likes
+            };
+          }
+          return post;
+        });
+        return { ...state, posts };
+      })();
     default:
       return state;
   }

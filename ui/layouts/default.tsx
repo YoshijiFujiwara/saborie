@@ -106,8 +106,6 @@ const DefaultLayout = ({ children }) => {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
-      <Divider />
       <List>
         {drawerItems.map(({ title, icon, linkUrl }, index) => (
           <ListItem
@@ -199,10 +197,7 @@ const DefaultLayout = ({ children }) => {
           </Drawer>
         </Hidden>
       </nav>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {children}
-      </main>
+      <main className={classes.content}>{children}</main>
     </div>
   );
 };

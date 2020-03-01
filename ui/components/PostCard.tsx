@@ -10,9 +10,9 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Context from "../contexts";
-import { Post } from "../generated/graphql";
+import { Post, useSwitchLikeMutation, Like } from "../generated/graphql";
 import { EReducer } from "../reducers";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,13 +43,47 @@ export type Props = {
 
 const PostCard: React.FC<Props> = ({ post }) => {
   const classes = useStyles();
-
   // context
   const { state, dispatch } = useContext(Context);
+
+  // graphql
+  const [switchLike, { loading, error, data }] = useSwitchLikeMutation();
+
+  // effect
+  useEffect(() => {
+    if (!loading && data) {
+      if (data.switchLike) {
+        dispatch({
+          type: EReducer.ADD_LIKE,
+          payload: {
+            postId: post.id,
+            like: data.switchLike
+          }
+        });
+      } else if (data.switchLike === null) {
+        dispatch({
+          type: EReducer.DELETE_LIKE,
+          payload: {
+            postId: post.id,
+            authorId: state.currentUser.id
+          }
+        });
+      }
+    }
+  }, [data]);
 
   // handlers
   const handleCommentButtonClick = () => {
     dispatch({ type: EReducer.SET_DISPLAY_POST_ID, payload: post.id });
+  };
+  const handleLikeButtonClick = () => {
+    switchLike({
+      variables: {
+        input: {
+          postId: post.id
+        }
+      }
+    });
   };
 
   return (
@@ -73,8 +107,17 @@ const PostCard: React.FC<Props> = ({ post }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          color={
+            post.likes.find(like => like.author.id === state.currentUser.id)
+              ? "secondary"
+              : "default"
+          }
+          onClick={handleLikeButtonClick}
+          aria-label="add to favorites"
+        >
           <FavoriteIcon />
+          {post.likes?.length}
         </IconButton>
         <IconButton
           onClick={handleCommentButtonClick}
@@ -82,6 +125,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
           color={post.id === state.displayPostId ? "primary" : "default"}
         >
           <ChatBubbleIcon />
+          {post.comments?.length}
         </IconButton>
       </CardActions>
     </Card>
