@@ -1,57 +1,62 @@
-import Cookie from "js-cookie";
 import App from "next/app";
-import React from "react";
-import Context from "../contexts";
+import React, { useReducer, useEffect } from "react";
+import Context, { InitialState } from "../contexts";
+import { useMeQuery, useSignOutMutation } from "../generated/graphql";
+import { withApollo } from "../lib/apollo";
+import reducer, { EReducer } from "../reducers";
 
-type CurrentUser = {
-  id: string;
-  email: string;
+// [FIY] https://github.com/zeit/next.js/issues/7515
+const MyFunctionComponent: React.FC = ({ children }) => {
+  // context
+  const [state, dispatch] = useReducer(reducer, InitialState);
+  const value = { state, dispatch };
+
+  // grpahql
+  const { error: meError, data: meData } = useMeQuery();
+  const [
+    signOut,
+    { error: signOutError, data: signOutData }
+  ] = useSignOutMutation({
+    onCompleted: () => {
+      console.log("complete signout");
+    }
+  });
+
+  // effect
+  useEffect(() => {
+    if (meData && meData.me) {
+      const { id, email } = meData.me;
+      dispatch({
+        type: EReducer.LOGIN_USER,
+        payload: {
+          id,
+          email
+        }
+      });
+    }
+    if (meError) {
+      // console.error(meError);
+      signOut();
+      dispatch({
+        type: EReducer.SIGN_OUT_USER
+      });
+    }
+    if (signOutData) {
+      console.log(signOutData);
+    }
+  }, [meData, meError, signOutData]);
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
-
-export type State = {
-  currentUser: CurrentUser;
-};
-
-export enum ECookie {
-  CURRENT_USER = "CURRENT_USER",
-  TOKEN = "TOKEN"
-}
+const MyFunctionComponentWithApollo: React.FC = withApollo(MyFunctionComponent);
 
 class MyApp extends App {
-  state: State = {
-    currentUser: null
-  };
-
-  componentDidMount() {}
-
-  loginUser = (user: State["currentUser"]): void => {
-    this.setState(prevState => ({
-      ...prevState,
-      currentUser: user
-    }));
-  };
-  signOutUser = (): void => {
-    this.setState(prevState => ({
-      ...prevState,
-      currentUser: null
-    }));
-  };
-
   render() {
     const { Component, pageProps } = this.props;
-
     return (
-      <Context.Provider
-        value={{
-          state: this.state,
-          dispatchFunctions: {
-            loginUser: this.loginUser,
-            signOutUser: this.signOutUser
-          }
-        }}
-      >
+      <MyFunctionComponentWithApollo>
         <Component {...pageProps} />
-      </Context.Provider>
+      </MyFunctionComponentWithApollo>
     );
   }
 }
