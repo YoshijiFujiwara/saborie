@@ -14,7 +14,7 @@ import Router from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import Context from "../contexts";
 import { useSignUpMutation } from "../generated/graphql";
-import { withApollo } from "../lib/apollo";
+import { EReducer } from "../reducers";
 
 function Copyright() {
   return (
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignUpPage: React.FC = () => {
   const classes = useStyles();
-  const { state, dispatchFunctions } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
   // state
   const [email, setEmail] = useState<string>("");
@@ -68,21 +68,21 @@ const SignUpPage: React.FC = () => {
   // effect
   useEffect(() => {
     if (data && data.signUp) {
-      const { id, email, token } = data.signUp;
-      dispatchFunctions.loginUser(
-        {
+      const { id, email } = data.signUp;
+      dispatch({
+        type: EReducer.LOGIN_USER,
+        payload: {
           id,
           email
-        },
-        token
-      );
+        }
+      });
       Router.push("/");
     }
     if (error) {
       console.error(error);
     }
     // もしログイン済みならリダイレクト
-    if (state.currentUser && state.token) {
+    if (state.currentUser) {
       Router.push("/");
     }
   }, [data, error, state]);
@@ -178,5 +178,4 @@ const SignUpPage: React.FC = () => {
   );
 };
 
-const SignUpPageWithApollo = withApollo(SignUpPage);
-export default SignUpPageWithApollo;
+export default SignUpPage;

@@ -4,7 +4,6 @@ import React from "react";
 import PostList from "../components/PostList";
 import { usePostsQuery, Post } from "../generated/graphql";
 import DefaultLayout from "../layouts/default";
-import { withApollo } from "../lib/apollo";
 
 const IndexPage: NextPage = () => {
   const { loading, error, data } = usePostsQuery();
@@ -30,5 +29,4 @@ const IndexPage: NextPage = () => {
   );
 };
 
-const IndexPageWithApollo = withApollo(IndexPage);
-export default IndexPageWithApollo;
+export default IndexPage;

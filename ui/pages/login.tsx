@@ -14,14 +14,14 @@ import Router from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import Context from "../contexts";
 import { useLoginMutation } from "../generated/graphql";
-import { withApollo } from "../lib/apollo";
+import { EReducer } from "../reducers";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Your Websit
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 const LoginPage = () => {
   const classes = useStyles();
-  const { state, dispatchFunctions } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
   // state
   const [email, setEmail] = useState<string>("");
@@ -67,21 +67,21 @@ const LoginPage = () => {
   // effect
   useEffect(() => {
     if (data && data.login) {
-      const { id, email, token } = data.login;
-      dispatchFunctions.loginUser(
-        {
+      const { id, email } = data.login;
+      dispatch({
+        type: EReducer.LOGIN_USER,
+        payload: {
           id,
           email
-        },
-        token
-      );
+        }
+      });
       Router.push("/");
     }
     if (error) {
       console.error(error);
     }
     // もしログイン済みならリダイレクト
-    if (state.currentUser && state.token) {
+    if (state.currentUser) {
       Router.push("/");
     }
   }, [data, error, state]);
@@ -174,5 +174,4 @@ const LoginPage = () => {
   );
 };
 
-const LoginPageWithApollo = withApollo(LoginPage);
-export default LoginPageWithApollo;
+export default LoginPage;
