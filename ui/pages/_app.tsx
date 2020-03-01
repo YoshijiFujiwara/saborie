@@ -1,7 +1,7 @@
 import App from "next/app";
 import React, { useReducer, useEffect } from "react";
 import Context, { InitialState } from "../contexts";
-import { useMeQuery, useSignOutMutation } from "../generated/graphql";
+import { useMeQuery } from "../generated/graphql";
 import { withApollo } from "../lib/apollo";
 import reducer, { EReducer } from "../reducers";
 
@@ -12,14 +12,8 @@ const MyFunctionComponent: React.FC = ({ children }) => {
   const value = { state, dispatch };
 
   // grpahql
-  const { error: meError, data: meData } = useMeQuery();
-  const [
-    signOut,
-    { error: signOutError, data: signOutData }
-  ] = useSignOutMutation({
-    onCompleted: () => {
-      console.log("complete signout");
-    }
+  const { data: meData } = useMeQuery({
+    onError: () => null // graphqlErrorのuncaughtが発生するのを防止
   });
 
   // effect
@@ -34,17 +28,7 @@ const MyFunctionComponent: React.FC = ({ children }) => {
         }
       });
     }
-    if (meError) {
-      // console.error(meError);
-      signOut();
-      dispatch({
-        type: EReducer.SIGN_OUT_USER
-      });
-    }
-    if (signOutData) {
-      console.log(signOutData);
-    }
-  }, [meData, meError, signOutData]);
+  }, [meData]);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
