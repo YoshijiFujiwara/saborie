@@ -36,12 +36,14 @@ export class PostResolver {
   @Mutation()
   @UseGuards(GqlAuthGuard)
   async createPost(
-    @Args('postInput') { title, body }: PostInputDto,
+    @Args('postInput') { todo, mistake, minutes, excuse }: PostInputDto,
     @GqlUser() user: User,
   ) {
     return this.prisma.client.createPost({
-      title,
-      body,
+      todo,
+      mistake,
+      minutes,
+      excuse,
       author: { connect: { id: user.id } },
     });
   }

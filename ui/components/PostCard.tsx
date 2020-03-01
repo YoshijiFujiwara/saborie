@@ -3,8 +3,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import Collapse from "@material-ui/core/Collapse";
+
 import { red } from "@material-ui/core/colors";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
@@ -69,7 +68,16 @@ const PostCard: React.FC<Props> = ({ post }) => {
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {post.title}
+          {post.todo}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {post.mistake}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {post.minutes}分
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {post.excuse}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

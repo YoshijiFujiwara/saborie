@@ -8,8 +8,10 @@ type User {
 
 type Post {
 	id: ID!
-	title: String!
-	body: String
+	todo: String!
+	mistake: String!
+	minutes: Int!
+	excuse: String
 	author: User!
 }
 
@@ -24,8 +26,10 @@ input LoginInput {
 }
 
 input PostInput {
-	title: String!
-	body: String
+	todo: String!
+	mistake: String!
+	minutes: Int!
+	excuse: String
 }
 
 type AuthPayload {

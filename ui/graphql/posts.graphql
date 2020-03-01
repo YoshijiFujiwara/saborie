@@ -1,8 +1,10 @@
 query Posts {
   posts {
     id
-    title
-    body
+    todo
+    mistake
+    minutes
+    excuse
     author {
       id
       email

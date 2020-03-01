@@ -80,9 +80,11 @@ const DefaultLayout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { state, dispatch } = useContext(Context);
 
+  // graphql
   const [signOut, { error: signOutError }] = useSignOutMutation({
     onCompleted: () => {
       dispatch({ type: EReducer.SIGN_OUT_USER });
+      Router.push("/login");
     }
   });
 
@@ -93,6 +95,7 @@ const DefaultLayout = ({ children }) => {
     }
   }, [signOutError]);
 
+  // event handlers
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };

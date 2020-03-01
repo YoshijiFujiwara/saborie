@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Router from "next/router";
 import React, { useState } from "react";
 import { useCreatePostMutation } from "../generated/graphql";
 
@@ -33,13 +34,19 @@ const PostForm: React.FC = () => {
   const classes = useStyles();
 
   // state
-  const [title, setTitle] = useState<string>("");
-  const [body, setBody] = useState<string>("");
+  const [todo, setTodo] = useState<string>("");
+  const [mistake, setMistake] = useState<string>("");
+  const [minutes, setMinutes] = useState<number>(0);
+  const [excuse, setExcuse] = useState<string>("");
 
   // graphql
   const [createPost, { loading, error, data }] = useCreatePostMutation({
     onCompleted: () => {
-      console.log("complete create post");
+      setTodo("");
+      setMistake("");
+      setMinutes(0);
+      setExcuse("");
+      Router.push("/");
     },
     onError: e => {
       console.error(e);
@@ -47,24 +54,37 @@ const PostForm: React.FC = () => {
   });
 
   // functions
-  const handleChangeTitle = (
+  const handleChangeTodo = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ): void => {
-    setTitle(e.target.value);
+    setTodo(e.target.value);
   };
-  const handleChangeBody = (
+  const handleChangeMistake = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ): void => {
-    setBody(e.target.value);
+    setMistake(e.target.value);
   };
+  const handleChangeMinutes = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ): void => {
+    setMinutes(Number(e.target.value));
+  };
+  const handleChangeExcuse = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ): void => {
+    setExcuse(e.target.value);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (!loading && title.trim() && body.trim()) {
+    if (!loading && todo.trim() && mistake.trim() && minutes > 0) {
       createPost({
         variables: {
           input: {
-            title,
-            body
+            todo,
+            mistake,
+            minutes,
+            excuse
           }
         }
       });
@@ -87,24 +107,48 @@ const PostForm: React.FC = () => {
             margin="normal"
             required
             fullWidth
-            id="title"
-            label="タイトル"
-            name="title"
+            id="todo"
+            label="やるべきだった"
+            name="todo"
             autoFocus
-            value={title}
-            onChange={handleChangeTitle}
+            value={todo}
+            onChange={handleChangeTodo}
           />
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="body"
-            label="本文"
-            id="body"
+            name="mistake"
+            label="やってしまった。。。"
+            id="mistake"
             multiline={true}
-            value={body}
-            onChange={handleChangeBody}
+            value={mistake}
+            onChange={handleChangeMistake}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            type="number"
+            name="minutes"
+            label="どのくらい？"
+            id="minutes"
+            multiline={true}
+            value={minutes}
+            onChange={handleChangeMinutes}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            name="excuse"
+            label="言い訳"
+            id="excuse"
+            multiline={true}
+            value={excuse}
+            onChange={handleChangeExcuse}
           />
           <Button
             type="submit"

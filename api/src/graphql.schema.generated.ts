@@ -12,8 +12,10 @@ export class LoginInput {
 }
 
 export class PostInput {
-    title: string;
-    body?: string;
+    todo: string;
+    mistake: string;
+    minutes: number;
+    excuse?: string;
 }
 
 export class SignUpInput {
@@ -38,8 +40,10 @@ export abstract class IMutation {
 
 export class Post {
     id: string;
-    title: string;
-    body?: string;
+    todo: string;
+    mistake: string;
+    minutes: number;
+    excuse?: string;
     author: User;
 }
 

@@ -48,14 +48,18 @@ export type MutationCreatePostArgs = {
 export type Post = {
    __typename?: 'Post',
   id: Scalars['ID'],
-  title: Scalars['String'],
-  body?: Maybe<Scalars['String']>,
+  todo: Scalars['String'],
+  mistake: Scalars['String'],
+  minutes: Scalars['Int'],
+  excuse?: Maybe<Scalars['String']>,
   author: User,
 };
 
 export type PostInput = {
-  title: Scalars['String'],
-  body?: Maybe<Scalars['String']>,
+  todo: Scalars['String'],
+  mistake: Scalars['String'],
+  minutes: Scalars['Int'],
+  excuse?: Maybe<Scalars['String']>,
 };
 
 export type Query = {
@@ -93,7 +97,7 @@ export type CreatePostMutation = (
   { __typename?: 'Mutation' }
   & { createPost: (
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'body'>
+    & Pick<Post, 'id' | 'todo' | 'mistake' | 'minutes' | 'excuse'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'email'>
@@ -132,7 +136,7 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'body'>
+    & Pick<Post, 'id' | 'todo' | 'mistake' | 'minutes' | 'excuse'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'email'>
@@ -166,8 +170,10 @@ export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput) {
   createPost(postInput: $input) {
     id
-    title
-    body
+    todo
+    mistake
+    minutes
+    excuse
     author {
       id
       email
@@ -270,8 +276,10 @@ export const PostsDocument = gql`
     query Posts {
   posts {
     id
-    title
-    body
+    todo
+    mistake
+    minutes
+    excuse
     author {
       id
       email
