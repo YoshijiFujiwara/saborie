@@ -1,11 +1,11 @@
 mutation CreatePost($input: PostInput) {
-	createPost(postInput: $input) {
-		id
-		title
-		body
-		author {
-			id
-			email
-		}
-	}
+  createPost(postInput: $input) {
+    id
+    title
+    body
+    author {
+      id
+      email
+    }
+  }
 }

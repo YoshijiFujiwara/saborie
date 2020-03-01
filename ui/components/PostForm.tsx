@@ -1,12 +1,7 @@
 import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -42,20 +37,38 @@ const PostForm: React.FC = () => {
   const [body, setBody] = useState<string>("");
 
   // graphql
+  const [createPost, { loading, error, data }] = useCreatePostMutation({
+    onCompleted: () => {
+      console.log("complete create post");
+    },
+    onError: e => {
+      console.error(e);
+    }
+  });
 
   // functions
   const handleChangeTitle = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
+  ): void => {
     setTitle(e.target.value);
   };
   const handleChangeBody = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
+  ): void => {
     setBody(e.target.value);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    if (!loading && title.trim() && body.trim()) {
+      createPost({
+        variables: {
+          input: {
+            title,
+            body
+          }
+        }
+      });
+    }
   };
 
   return (
@@ -68,7 +81,7 @@ const PostForm: React.FC = () => {
         <Typography component="h1" variant="h5">
           投稿するっ！
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"

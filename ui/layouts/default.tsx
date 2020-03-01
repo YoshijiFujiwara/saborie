@@ -71,11 +71,6 @@ const drawerItems = [
     title: "検索やで",
     icon: <SearchIcon />,
     linkUrl: "/search"
-  },
-  {
-    title: "作成するやで",
-    icon: <CreateIcon />,
-    linkUrl: "/create"
   }
 ];
 
@@ -124,6 +119,17 @@ const DefaultLayout = ({ children }) => {
         ))}
         {state.currentUser ? (
           <>
+            <ListItem
+              button
+              onClick={() => {
+                Router.push("/create");
+              }}
+            >
+              <ListItemIcon>
+                <CreateIcon />
+              </ListItemIcon>
+              <ListItemText primary="作成するやで" />
+            </ListItem>
             <ListItem button>
               <ListItemIcon>
                 <PersonIcon />
