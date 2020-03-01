@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { NextPage } from "next";
 import NextLink from "next/link";
 import Router from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -49,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUpPage: React.FC = () => {
+const SignUpPage: NextPage = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(Context);
 
@@ -90,15 +91,15 @@ const SignUpPage: React.FC = () => {
   // functions
   const handleChangeEmail = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
+  ): void => {
     setEmail(e.target.value);
   };
   const handleChangePassword = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
+  ): void => {
     setPassword(e.target.value);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!loading && email.trim() && password.trim()) {
       signUp({
