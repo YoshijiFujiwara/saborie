@@ -1,12 +1,12 @@
 import { Grid } from "@material-ui/core";
 import { NextPage } from "next";
-import Router from "next/router";
-import React, { useState, useContext, useEffect } from "react";
+
+import React, { useContext, useEffect } from "react";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import PostList from "../components/PostList";
 import Context from "../contexts";
-import { usePostsQuery, Post, Comment } from "../generated/graphql";
+import { usePostsQuery, Post } from "../generated/graphql";
 import DefaultLayout from "../layouts/default";
 import { EReducer } from "../reducers";
 
@@ -39,7 +39,7 @@ const IndexPage: NextPage = () => {
         <Grid item xs={6}>
           {state.displayPostId && (
             <>
-              {state.currentUser && <CommentForm />}
+              {state.currentUser && state.displayPostId && <CommentForm />}
               <CommentList comments={displayComments} />
             </>
           )}

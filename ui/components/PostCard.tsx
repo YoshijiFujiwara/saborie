@@ -113,7 +113,7 @@ const PostCard: React.FC<Props> = ({ post, page }) => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            ほ
+            {post.author.email.slice(0, 1)}
           </Avatar>
         }
         title={post.author.email}

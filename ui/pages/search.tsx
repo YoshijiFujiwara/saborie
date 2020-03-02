@@ -29,7 +29,9 @@ const SearchPage: NextPage = () => {
         <Grid item xs={6}>
           {state.displayPostId && (
             <>
-              {state.currentUser && <CommentForm />}
+              {state.currentUser && state.displayPostIdInSearch && (
+                <CommentForm />
+              )}
               <CommentList comments={displayComments} />
             </>
           )}

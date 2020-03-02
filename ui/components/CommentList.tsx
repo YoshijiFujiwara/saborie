@@ -42,7 +42,7 @@ const CommentList: React.FC<Props> = ({ comments }) => {
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar aria-label="recipe" className={classes.avatar}>
-                    ほ
+                    {comment.author.email.slice(0, 1)}
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
