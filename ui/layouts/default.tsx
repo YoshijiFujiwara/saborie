@@ -22,6 +22,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import SearchIcon from "@material-ui/icons/Search";
 import Router from "next/router";
 import React, { useContext, useEffect } from "react";
+import DrawerItems from "../components/DrawerItems";
 import Context from "../contexts";
 import { useSignOutMutation } from "../generated/graphql";
 import { EReducer } from "../reducers";
@@ -62,18 +63,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const drawerItems = [
-  {
-    title: "一覧やで",
-    icon: <ListIcon />,
-    linkUrl: "/"
-  },
-  {
-    title: "検索やで",
-    icon: <SearchIcon />,
-    linkUrl: "/search"
-  }
-];
+type DrawerItem = {
+  title: any;
+  icon: JSX.Element;
+  isSignInRequired: boolean;
+  onClick: () => void;
+};
 
 const DefaultLayout = ({ children }) => {
   const classes = useStyles();
@@ -81,85 +76,15 @@ const DefaultLayout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { state, dispatch } = useContext(Context);
 
-  // graphql
-  const [signOut, { error: signOutError }] = useSignOutMutation({
-    onCompleted: () => {
-      dispatch({ type: EReducer.SIGN_OUT_USER });
-      Router.push("/login");
-    }
-  });
-
-  // effect
-  useEffect(() => {
-    if (signOutError) {
-      console.error(signOutError);
-    }
-  }, [signOutError]);
-
   // event handlers
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-  const handleSignOutButtonClick = () => {
-    signOut();
   };
 
   const drawer = (
     <div>
       <List>
-        {drawerItems.map(({ title, icon, linkUrl }, index) => (
-          <ListItem
-            button
-            key={index}
-            onClick={() => {
-              Router.push(linkUrl);
-            }}
-          >
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText primary={title} />
-          </ListItem>
-        ))}
-        {state.currentUser ? (
-          <>
-            <ListItem
-              button
-              onClick={() => {
-                Router.push("/create");
-              }}
-            >
-              <ListItemIcon>
-                <CreateIcon />
-              </ListItemIcon>
-              <ListItemText primary="作成するやで" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary={state.currentUser.email} />
-            </ListItem>
-            <ListItem button onClick={handleSignOutButtonClick}>
-              <ListItemIcon>
-                <ExitToAppIcon />
-              </ListItemIcon>
-              <ListItemText primary="ログアウト(仮)" />
-            </ListItem>
-          </>
-        ) : (
-          <>
-            <ListItem
-              button
-              onClick={() => {
-                Router.push("/login");
-              }}
-            >
-              <ListItemIcon>
-                <InputIcon />
-              </ListItemIcon>
-              <ListItemText primary="ログイン" />
-            </ListItem>
-          </>
-        )}
+        <DrawerItems />
       </List>
     </div>
   );
