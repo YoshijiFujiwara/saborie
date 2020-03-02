@@ -76,7 +76,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
         });
       }
     }
-  }, [data]);
+  }, [data, loading]);
 
   // handlers
   const handleCommentButtonClick = () => {

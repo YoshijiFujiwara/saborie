@@ -61,7 +61,7 @@ const PostForm: React.FC = () => {
       dispatch({ type: EReducer.ADD_POST, payload: data.createPost });
       Router.push("/");
     }
-  }, [data]);
+  }, [data, loading]);
 
   // functions
   const handleChangeTodo = (

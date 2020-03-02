@@ -23,7 +23,7 @@ const SearchForm: React.FC = () => {
     if (error) {
       console.error(error);
     }
-  }, [data, error]);
+  }, [data, error, loading]);
 
   // hendlers
   const handleChangeSearch = (

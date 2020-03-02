@@ -18,7 +18,7 @@ const IndexPage: NextPage = () => {
     if (!loading && data.posts) {
       dispatch({ type: EReducer.SET_POSTS, payload: data.posts });
     }
-  }, [data]);
+  }, [data, loading]);
 
   // 選択された投稿のコメント一覧
   const displayComments =

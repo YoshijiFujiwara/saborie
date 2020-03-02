@@ -33,7 +33,10 @@ const CommentForm: React.FC = () => {
         }
       });
     }
-  }, [data]);
+    if (error) {
+      console.error(error);
+    }
+  }, [data, loading, error]);
 
   // handlers
   const handleChangeComment = (

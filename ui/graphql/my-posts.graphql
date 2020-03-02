@@ -1,0 +1,31 @@
+query MyPosts {
+  myPosts {
+    id
+    todo
+    mistake
+    minutes
+    excuse
+    author {
+      id
+      email
+    }
+    comments {
+      id
+      body
+      author {
+        id
+        email
+      }
+    }
+    likes {
+      id
+      author {
+        id
+        email
+      }
+      post {
+        id
+      }
+    }
+  }
+}
