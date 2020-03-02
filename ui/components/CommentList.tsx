@@ -1,4 +1,5 @@
 import Avatar from "@material-ui/core/Avatar";
+import { orange } from "@material-ui/core/colors";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main
+      backgroundColor: orange[300]
     },
     inline: {
       display: "inline"
