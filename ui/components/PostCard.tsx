@@ -1,4 +1,3 @@
-import { openStdin } from "process";
 import { Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
@@ -11,9 +10,9 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Router from "next/router";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Context from "../contexts";
-import { Post, useSwitchLikeMutation, Like } from "../generated/graphql";
+import { Post, useSwitchLikeMutation } from "../generated/graphql";
 import { EReducer } from "../reducers";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -34,15 +33,20 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       backgroundColor: red[500]
+    },
+    card: {
+      boxShadow: "0 0 0 0",
+      border: "#808080 solid 1px"
     }
   })
 );
 
 export type Props = {
   post: Post;
+  page: "index" | "search";
 };
 
-const PostCard: React.FC<Props> = ({ post }) => {
+const PostCard: React.FC<Props> = ({ post, page }) => {
   const classes = useStyles();
   // context
   const { state, dispatch } = useContext(Context);
@@ -50,7 +54,6 @@ const PostCard: React.FC<Props> = ({ post }) => {
   // graphql
   const [switchLike, { loading, error, data }] = useSwitchLikeMutation();
 
-  // effect
   useEffect(() => {
     if (!loading && data) {
       if (data.switchLike) {
@@ -78,9 +81,18 @@ const PostCard: React.FC<Props> = ({ post }) => {
 
   // handlers
   const handleCommentButtonClick = () => {
-    dispatch({ type: EReducer.SET_DISPLAY_POST_ID, payload: post.id });
+    if (page === "index") {
+      dispatch({ type: EReducer.SET_DISPLAY_POST_ID, payload: post.id });
+    } else if (page === "search") {
+      dispatch({
+        type: EReducer.SET_DISPLAY_POST_ID_IN_SEARCH,
+        payload: post.id
+      });
+    }
   };
   const handleLikeButtonClick = () => {
+    // TODO: ログインしてください、的なメッセージを出すか
+    if (!state.currentUser) return;
     switchLike({
       variables: {
         input: {
@@ -90,8 +102,15 @@ const PostCard: React.FC<Props> = ({ post }) => {
     });
   };
 
+  const hightlightPostId: string | null =
+    page === "index"
+      ? state.displayPostId
+      : page === "search"
+      ? state.displayPostIdInSearch
+      : null;
+
   return (
-    <Card>
+    <Card className={classes.card}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -126,7 +145,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
         <IconButton
           onClick={handleCommentButtonClick}
           aria-label="comment"
-          color={post.id === state.displayPostId ? "primary" : "default"}
+          color={post.id === hightlightPostId ? "primary" : "default"}
         >
           <ChatBubbleIcon />
           {post.comments?.length}

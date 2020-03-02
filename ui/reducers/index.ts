@@ -7,6 +7,7 @@ export enum EReducer {
   SIGN_OUT_USER = "SIGN_OUT_USER",
   // post
   SET_DISPLAY_POST_ID = "SET_DISPLAY_POST_ID",
+  SET_DISPLAY_POST_ID_IN_SEARCH = "SET_DISPLAY_POST_ID_IN_SEARCH",
   SET_POSTS = "SET_POSTS",
   ADD_POST = "ADD_POST",
   // searched post
@@ -18,6 +19,10 @@ export enum EReducer {
   DELETE_LIKE = "DELETE_LIKE"
 }
 
+export type SetDisplayIdPayload = {
+  postId: string;
+  whichState: "posts" | "searchedPosts";
+};
 export type AddCommentPayload = {
   postId: string;
   comment: Comment;
@@ -50,6 +55,11 @@ const reducer = (state: TState, { type, payload }: TPayload): TState => {
       return {
         ...state,
         displayPostId: payload as string
+      };
+    case EReducer.SET_DISPLAY_POST_ID_IN_SEARCH:
+      return {
+        ...state,
+        displayPostIdInSearch: payload as string
       };
     case EReducer.SET_POSTS:
       return {

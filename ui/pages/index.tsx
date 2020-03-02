@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core";
 import { NextPage } from "next";
+import Router from "next/router";
 import React, { useState, useContext, useEffect } from "react";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
@@ -33,7 +34,7 @@ const IndexPage: NextPage = () => {
     <DefaultLayout>
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <PostList posts={state.posts as Post[]} />
+          <PostList posts={state.posts as Post[]} page="index" />
         </Grid>
         <Grid item xs={6}>
           {state.displayPostId && (

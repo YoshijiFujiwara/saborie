@@ -1,31 +1,16 @@
-import { Divider } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import {
   makeStyles,
   useTheme,
   Theme,
   createStyles
 } from "@material-ui/core/styles";
-
-import CreateIcon from "@material-ui/icons/Create";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import InputIcon from "@material-ui/icons/Input";
-import ListIcon from "@material-ui/icons/List";
-import PersonIcon from "@material-ui/icons/Person";
-import SearchIcon from "@material-ui/icons/Search";
-import Router from "next/router";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import DrawerItems from "../components/DrawerItems";
 import Context from "../contexts";
-import { useSignOutMutation } from "../generated/graphql";
-import { EReducer } from "../reducers";
 
 const drawerWidth = 240;
 
@@ -54,7 +39,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
-      width: drawerWidth
+      width: drawerWidth,
+      fontSize: 45,
+      fontWeight: "bold"
     },
     content: {
       flexGrow: 1,

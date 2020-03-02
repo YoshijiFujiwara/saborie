@@ -8,6 +8,7 @@ export type User = {
 export type TState = {
   currentUser: User;
   displayPostId: string;
+  displayPostIdInSearch: string;
   posts: Post[];
   searchedPosts: Post[];
 };
@@ -18,6 +19,7 @@ export type TPayload = {
 export const InitialState: TState = {
   currentUser: null,
   displayPostId: null,
+  displayPostIdInSearch: null,
   posts: [],
   searchedPosts: []
 };

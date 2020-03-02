@@ -14,16 +14,17 @@ const SearchPage: NextPage = () => {
 
   // 選択された投稿のコメント一覧
   const displayComments =
-    !state.displayPostId || state.posts.length < 1
+    !state.displayPostIdInSearch || state.posts.length < 1
       ? []
-      : state.posts.find(post => post.id === state.displayPostId).comments;
+      : state.posts.find(post => post.id === state.displayPostIdInSearch)
+          .comments;
 
   return (
     <DefaultLayout>
       <SearchForm />
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <PostList posts={state.searchedPosts as Post[]} />
+          <PostList posts={state.searchedPosts as Post[]} page="search" />
         </Grid>
         <Grid item xs={6}>
           {state.displayPostId && (
