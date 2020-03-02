@@ -82,6 +82,8 @@ export abstract class IQuery {
 
     abstract posts(): Post[] | Promise<Post[]>;
 
+    abstract myPosts(): Post[] | Promise<Post[]>;
+
     abstract postsByKeyword(keyword: string): Post[] | Promise<Post[]>;
 }
 

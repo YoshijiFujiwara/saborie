@@ -29,6 +29,18 @@ export class PostResolver {
   }
 
   @Query()
+  @UseGuards(GqlAuthGuard)
+  async myPosts(@GqlUser() user: User) {
+    return this.prisma.client.posts({
+      where: {
+        author: {
+          id: user.id,
+        },
+      },
+    });
+  }
+
+  @Query()
   async postsByKeyword(@Args('keyword') keyword: string) {
     return this.prisma.client.posts({
       where: {
