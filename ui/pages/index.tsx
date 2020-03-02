@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Divider } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { NextPage } from "next";
 import React, { useContext, useEffect, createRef, useState } from "react";
@@ -6,6 +6,7 @@ import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import PostCard from "../components/PostCard";
 import PostList from "../components/PostList";
+import VerticalDivider from "../components/VerticalDivider";
 import Context from "../contexts";
 import { usePostsQuery, Post } from "../generated/graphql";
 import DefaultLayout from "../layouts/default";
@@ -16,10 +17,10 @@ const useStyles = makeStyles(() =>
     selectedPost: {
       marginBottom: 10
     },
+
     posts: {
       maxHeight: "100vh",
-      overflow: "auto",
-      borderRight: "solid 1px white"
+      overflow: "auto"
     },
     comments: { overflow: "auto" }
   })
@@ -30,14 +31,27 @@ const IndexPage: NextPage = () => {
   const { state, dispatch } = useContext(Context);
   const { loading, error, data } = usePostsQuery();
 
+  const [dividerLeft, setDividerLeft] = useState<number>(0);
+  const [dividerHeight, setDividerHeight] = useState<number>(0);
   const [commentListHeight, setCommentListHeight] = useState<number>(0);
 
   // effects
   useEffect(() => {
-    const offsetTop = document
+    // コメント覧の高さ調整
+    const commentListOffsetTop = document
       .getElementById("comment-list")
       ?.getBoundingClientRect().top;
-    setCommentListHeight(window.innerHeight - offsetTop);
+    setCommentListHeight(window.innerHeight - commentListOffsetTop);
+
+    // Dividerの位置調節
+    const postListOffsetLeft = document
+      .getElementById("post-list")
+      ?.getBoundingClientRect().left;
+    // TODO: なんとなくで決めた - 10
+    setDividerLeft((window.innerWidth + postListOffsetLeft - 10) / 2);
+
+    // dividerの高さ
+    setDividerHeight(window.innerHeight);
   });
   useEffect(() => {
     if (!loading && data?.posts) {
@@ -58,9 +72,14 @@ const IndexPage: NextPage = () => {
   return (
     <DefaultLayout>
       <Grid container spacing={3}>
-        <Grid item xs={6} className={classes.posts}>
+        <Grid id="post-list" item xs={6} className={classes.posts}>
           <PostList posts={state.posts as Post[]} page="index" />
         </Grid>
+        <VerticalDivider
+          height={dividerHeight}
+          left={dividerLeft}
+          border="0.5px solid white"
+        />
         <Grid item xs={6}>
           {state.displayPostId && (
             <>
