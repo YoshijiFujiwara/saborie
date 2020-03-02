@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      backgroundColor: theme.palette.background.paper
+      backgroundColor: theme.palette.background.paper,
+      border: "#808080 1px solid"
     },
     avatar: {
       margin: theme.spacing(1),
@@ -33,37 +34,41 @@ const CommentList: React.FC<Props> = ({ comments }) => {
   const classes = useStyles();
 
   return (
-    <List className={classes.root}>
-      {comments.map((comment, index) => (
-        <React.Fragment key={index}>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar aria-label="recipe" className={classes.avatar}>
-                ほ
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={comment.body}
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    {comment.author.email}
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          {index !== comments.length - 1 && (
-            <Divider variant="inset" component="li" />
-          )}
-        </React.Fragment>
-      ))}
-    </List>
+    <>
+      {comments.length > 0 && (
+        <List className={classes.root}>
+          {comments.map((comment, index) => (
+            <React.Fragment key={index}>
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    ほ
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={comment.body}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        {comment.author.email}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+              {index !== comments.length - 1 && (
+                <Divider variant="inset" component="li" />
+              )}
+            </React.Fragment>
+          ))}
+        </List>
+      )}
+    </>
   );
 };
 
