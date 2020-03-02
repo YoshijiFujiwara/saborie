@@ -1,10 +1,11 @@
 import { TextField, InputAdornment } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
+import Router from "next/router";
 import React, { useState, useEffect, useContext } from "react";
 import Context from "../contexts";
 import { useCreateCommentMutation } from "../generated/graphql";
-import { EReducer } from "../reducers";
+import { EReducer, AddCommentPayload } from "../reducers";
 
 const CommentForm: React.FC = () => {
   const { state, dispatch } = useContext(Context);

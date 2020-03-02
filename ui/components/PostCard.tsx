@@ -14,7 +14,7 @@ import Router from "next/router";
 import React, { useContext, useEffect } from "react";
 import Context from "../contexts";
 import { Post, useSwitchLikeMutation, Like } from "../generated/graphql";
-import { EReducer, AddLikePayload } from "../reducers";
+import { EReducer } from "../reducers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,16 +53,12 @@ const PostCard: React.FC<Props> = ({ post }) => {
   // effect
   useEffect(() => {
     if (!loading && data) {
-      const whichState: AddLikePayload["whichState"] =
-        Router.pathname === "/" ? "posts" : "searchedPosts";
-
       if (data.switchLike) {
         dispatch({
           type: EReducer.ADD_LIKE,
           payload: {
             postId: post.id,
-            like: data.switchLike,
-            whichState
+            like: data.switchLike
           }
         });
       } else if (data.switchLike === null) {
@@ -70,13 +66,15 @@ const PostCard: React.FC<Props> = ({ post }) => {
           type: EReducer.DELETE_LIKE,
           payload: {
             postId: post.id,
-            authorId: state.currentUser.id,
-            whichState
+            authorId: state.currentUser.id
           }
         });
       }
     }
-  }, [data, loading]);
+    if (error) {
+      console.error(error);
+    }
+  }, [data, loading, error]);
 
   // handlers
   const handleCommentButtonClick = () => {

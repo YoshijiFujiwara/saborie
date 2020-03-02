@@ -37,14 +37,14 @@ const DrawerItems: React.FC = () => {
   return (
     <>
       <DrawerItem
-        title="一覧やで"
+        title="一覧"
         icon={<ListIcon />}
         handleOnClick={() => {
           Router.push("/");
         }}
       />
       <DrawerItem
-        title="検索するやで"
+        title="検索"
         icon={<SearchIcon />}
         handleOnClick={() => {
           Router.push("/search");
@@ -53,7 +53,7 @@ const DrawerItems: React.FC = () => {
       {state.currentUser ? (
         <>
           <DrawerItem
-            title="作成するやで"
+            title="投稿"
             icon={<CreateIcon />}
             handleOnClick={() => {
               Router.push("/create");
@@ -67,7 +67,7 @@ const DrawerItems: React.FC = () => {
             }}
           />
           <DrawerItem
-            title="ログアウト(仮)"
+            title="ログアウト"
             icon={<ExitToAppIcon />}
             handleOnClick={handleSignOutButtonClick}
           />
