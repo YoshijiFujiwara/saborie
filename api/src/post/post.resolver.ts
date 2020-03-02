@@ -28,6 +28,19 @@ export class PostResolver {
     return this.prisma.client.posts();
   }
 
+  @Query()
+  async postsByKeyword(@Args('keyword') keyword: string) {
+    return this.prisma.client.posts({
+      where: {
+        OR: [
+          { todo_contains: keyword },
+          { mistake_contains: keyword },
+          { excuse_contains: keyword },
+        ],
+      },
+    });
+  }
+
   @ResolveProperty()
   async author(@Parent() { id }: Post) {
     return this.prisma.client.post({ id }).author();

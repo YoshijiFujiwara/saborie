@@ -65,6 +65,7 @@ type Query {
 	me: AuthPayload!
 	post(id: ID!): Post!
 	posts: [Post!]!
+	postsByKeyword(keyword: String!): [Post!]!
 }
 
 type Mutation {
