@@ -1,4 +1,3 @@
-import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import InputIcon from "@material-ui/icons/Input";
@@ -60,7 +59,7 @@ const DrawerItems: React.FC = () => {
             }}
           />
           <DrawerItem
-            title={state.currentUser.email}
+            title="プロフィール"
             icon={<PersonIcon />}
             handleOnClick={() => {
               Router.push("/profile");

@@ -1,4 +1,5 @@
 import { createMuiTheme, Theme } from "@material-ui/core";
+import { purple, orange } from "@material-ui/core/colors";
 import { ThemeProvider } from "@material-ui/styles";
 import App from "next/app";
 import React, { useReducer, useEffect } from "react";
@@ -9,7 +10,30 @@ import reducer, { EReducer } from "../reducers";
 
 const theme: Theme = createMuiTheme({
   palette: {
-    type: "light"
+    type: "dark",
+    primary: {
+      main: "#eb7134",
+      dark: "#d1632c",
+      contrastText: "#fff"
+    },
+    // secondary: {
+    //   main: "#64B42D",
+    //   dark: "#008732",
+    //   contrastText: "#fff"
+    // },
+    // error: {
+    //   main: "#BD0043",
+    //   contrastText: "#fff"
+    // },
+    // divider: "#D7D6D5",
+    background: {
+      paper: "#15202C",
+      default: "#17222F"
+    }
+  },
+  typography: {
+    fontFamily: 'Avenir Next, Roboto,"Helvetica Neue",Arial,sans-serif',
+    htmlFontSize: 16
   }
 });
 
