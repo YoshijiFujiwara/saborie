@@ -17,9 +17,8 @@ const useStyles = makeStyles(() =>
     selectedPost: {
       marginBottom: 10
     },
-
     posts: {
-      maxHeight: "100vh",
+      height: "100vh",
       overflow: "auto"
     },
     comments: { overflow: "auto" }
@@ -51,7 +50,7 @@ const IndexPage: NextPage = () => {
     setDividerLeft((window.innerWidth + postListOffsetLeft - 10) / 2);
 
     // dividerの高さ
-    setDividerHeight(window.innerHeight);
+    setDividerHeight(window.innerHeight - 30);
   });
   useEffect(() => {
     if (!loading && data?.posts) {
@@ -91,7 +90,7 @@ const IndexPage: NextPage = () => {
                 id="comment-list"
                 className={classes.comments}
                 style={{
-                  maxHeight: commentListHeight ? commentListHeight : 500
+                  height: commentListHeight ? commentListHeight : 500
                 }}
               >
                 <CommentList comments={displayComments} />
