@@ -109,7 +109,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
       <CardActions disableSpacing>
         <IconButton
           color={
-            post.likes.find(like => like.author.id === state.currentUser.id)
+            post.likes?.find(like => like.author.id === state.currentUser.id)
               ? "secondary"
               : "default"
           }

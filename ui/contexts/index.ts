@@ -9,6 +9,7 @@ export type TState = {
   currentUser: User;
   displayPostId: string;
   posts: Post[];
+  searchedPosts: Post[];
 };
 export type TPayload = {
   type: string;
@@ -17,7 +18,8 @@ export type TPayload = {
 export const InitialState: TState = {
   currentUser: null,
   displayPostId: null,
-  posts: []
+  posts: [],
+  searchedPosts: []
 };
 
 // [FIY] https://stackoverflow.com/questions/54577865/react-createcontext-issue-in-typescript/54667477

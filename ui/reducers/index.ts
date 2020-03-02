@@ -9,6 +9,8 @@ export enum EReducer {
   SET_DISPLAY_POST_ID = "SET_DISPLAY_POST_ID",
   SET_POSTS = "SET_POSTS",
   ADD_POST = "ADD_POST",
+  // searched post
+  SET_SEARCHED_POSTS = "SET_SEARCHED_POSTS",
   // comment
   ADD_COMMENT = "ADD_COMMENT",
   // like
@@ -58,6 +60,13 @@ const reducer = (state: TState, { type, payload }: TPayload): TState => {
       return {
         ...state,
         posts: [...state.posts, payload as Post]
+      };
+
+    // searched posts
+    case EReducer.SET_SEARCHED_POSTS:
+      return {
+        ...state,
+        searchedPosts: payload as Post[]
       };
 
     // comment

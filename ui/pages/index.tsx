@@ -12,7 +12,6 @@ import { EReducer } from "../reducers";
 const IndexPage: NextPage = () => {
   const { state, dispatch } = useContext(Context);
   const { loading, error, data } = usePostsQuery();
-  const posts = data?.posts; // TODO: このアサーションが益なのか、害なのか...
 
   // effects
   useEffect(() => {
@@ -21,7 +20,8 @@ const IndexPage: NextPage = () => {
     }
   }, [data]);
 
-  const comments =
+  // 選択された投稿のコメント一覧
+  const displayComments =
     !state.displayPostId || state.posts.length < 1
       ? []
       : state.posts.find(post => post.id === state.displayPostId).comments;
@@ -36,7 +36,7 @@ const IndexPage: NextPage = () => {
           {state.displayPostId && (
             <>
               {state.currentUser && <CommentForm />}
-              <CommentList comments={comments} />
+              <CommentList comments={displayComments} />
             </>
           )}
         </Grid>

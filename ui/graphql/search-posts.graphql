@@ -1,0 +1,31 @@
+query SearchPosts($input: String!) {
+  postsByKeyword(keyword: $input) {
+    id
+    todo
+    mistake
+    minutes
+    excuse
+    author {
+      id
+      email
+    }
+    comments {
+      id
+      body
+      author {
+        id
+        email
+      }
+    }
+    likes {
+      id
+      author {
+        id
+        email
+      }
+      post {
+        id
+      }
+    }
+  }
+}
