@@ -10,10 +10,11 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import Router from "next/router";
 import React, { useContext, useEffect } from "react";
 import Context from "../contexts";
 import { Post, useSwitchLikeMutation, Like } from "../generated/graphql";
-import { EReducer } from "../reducers";
+import { EReducer, AddLikePayload } from "../reducers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,12 +53,16 @@ const PostCard: React.FC<Props> = ({ post }) => {
   // effect
   useEffect(() => {
     if (!loading && data) {
+      const whichState: AddLikePayload["whichState"] =
+        Router.pathname === "/" ? "posts" : "searchedPosts";
+
       if (data.switchLike) {
         dispatch({
           type: EReducer.ADD_LIKE,
           payload: {
             postId: post.id,
-            like: data.switchLike
+            like: data.switchLike,
+            whichState
           }
         });
       } else if (data.switchLike === null) {
@@ -65,7 +70,8 @@ const PostCard: React.FC<Props> = ({ post }) => {
           type: EReducer.DELETE_LIKE,
           payload: {
             postId: post.id,
-            authorId: state.currentUser.id
+            authorId: state.currentUser.id,
+            whichState
           }
         });
       }
