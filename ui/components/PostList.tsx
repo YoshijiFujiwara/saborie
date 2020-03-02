@@ -1,4 +1,4 @@
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Post } from "../generated/graphql";
 import PostCard from "./PostCard";
