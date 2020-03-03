@@ -1,12 +1,21 @@
 import { ChartData } from "../components/Chart";
 import { Post } from "../generated/graphql";
 
-export const randomColor = (): string => {
-  const x = Math.floor(Math.random() * 256);
-  const y = Math.floor(Math.random() * 256);
-  const z = Math.floor(Math.random() * 256);
-  return `rgb(${x}, ${y}, ${z})`;
-};
+// export const randomColor = (): string => {
+//   const x = Math.floor(Math.random() * 256);
+//   const y = Math.floor(Math.random() * 256);
+//   const z = Math.floor(Math.random() * 256);
+//   return `rgb(${x}, ${y}, ${z})`;
+// };
+
+const colorArray = [
+  "#ff4c05",
+  "#ffb405",
+  "#06c449",
+  "#06aec4",
+  "#c98740",
+  "#ed8f82"
+];
 
 export const aggregateLabelAndMinutes = (
   posts: Post[],
@@ -31,10 +40,10 @@ export const postToChatDataAdapter = (
   const data = [];
   const labels = [];
   const colors = [];
-  Object.keys(labelAndMinutes).forEach(key => {
+  Object.keys(labelAndMinutes).forEach((key, index) => {
     data.push(labelAndMinutes[key]);
     labels.push(key);
-    colors.push(randomColor());
+    colors.push(colorArray[index % 6]);
   });
   return {
     datasets: [

@@ -10,11 +10,11 @@ import reducer, { EReducer } from "../reducers";
 
 const theme: Theme = createMuiTheme({
   palette: {
-    type: "dark",
+    type: "light",
     primary: {
-      main: "#eb7134",
-      dark: "#d1632c",
-      contrastText: "#fff"
+      main: "#99633d"
+      // dark: "#d1632c",
+      // contrastText: "#fff"
     },
     // secondary: {
     //   main: "#64B42D",
@@ -27,8 +27,8 @@ const theme: Theme = createMuiTheme({
     // },
     // divider: "#D7D6D5",
     background: {
-      paper: "#15202C",
-      default: "#17222F"
+      paper: "#fff5d4",
+      default: "#fff5d4"
     }
   },
   typography: {

@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     card: {
       boxShadow: "0 0 0 0",
-      border: "#808080 solid 1px"
+      border: "#808080 solid 2px",
+      marginBottom: 10
     }
   })
 );
@@ -121,12 +122,18 @@ const PostCard: React.FC<Props> = ({ post, page }) => {
         subheader="September 14, 2016"
       />
       <CardContent>
-        <Typography variant="h5" color="textSecondary" component="p">
-          {post.todo}をサボって{post.mistake}を{post.minutes / 60}
-          時間やっちゃった
+        <Typography
+          variant="h5"
+          component="p"
+          style={{ color: "#38271d", marginBottom: 10 }}
+        >
+          <span style={{ fontWeight: "bold" }}>{post.todo}</span>をサボって
+          <span style={{ fontWeight: "bold" }}>{post.mistake}</span>を
+          <span style={{ fontWeight: "bold" }}>{post.minutes / 60}時間</span>
+          やっちゃった
         </Typography>
-        <Typography variant="h6" color="textSecondary" component="p">
-          いいわけ：{post.excuse}
+        <Typography variant="h6" component="p" style={{ color: "#38271d" }}>
+          いいわけ：<span style={{ fontWeight: "bold" }}>{post.excuse}</span>
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -140,15 +147,17 @@ const PostCard: React.FC<Props> = ({ post, page }) => {
           aria-label="add to favorites"
         >
           <FavoriteIcon />
-          {post.likes?.length}
+          &nbsp;{post.likes?.length}
         </IconButton>
         <IconButton
           onClick={handleCommentButtonClick}
           aria-label="comment"
-          color={post.id === hightlightPostId ? "primary" : "default"}
+          style={{
+            color: post.id === hightlightPostId ? "#4224d6" : "grey"
+          }}
         >
           <ChatBubbleIcon />
-          {post.comments?.length}
+          &nbsp;{post.comments?.length}
         </IconButton>
       </CardActions>
     </Card>

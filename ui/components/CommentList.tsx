@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: "100%",
       backgroundColor: theme.palette.background.paper,
-      border: "#808080 1px solid"
+      border: "#808080 1.5px solid"
     },
     avatar: {
       margin: theme.spacing(1),
